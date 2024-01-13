@@ -8,37 +8,6 @@ import (
 	"github.com/pjotrscholtze/go-markdown/cmd/go-markdown/entity"
 )
 
-const (
-	headerRegex        = `^(#{1,6}[ ]?[\d\w ]+[#]*)|([\w\d ]+\n[-=]{4,})`
-	blockquoteRegex    = `^>`
-	tableRegex         = `^(\|.+\|\n\|([ \-:]+\|)+\n)((\|.+\|\n)+)`
-	listItemCandidate  = `^\s*(([\-+\*]|(\d+\.)).*)+$`
-	codeblockStart     = `^\x60{3}`
-	codeblockEnd       = `\x60{3}$`
-	horizontalLine     = `((\*( )?)|(\-( )?)|(_( )?)){3,}$`
-	termDefinitionLine = `^: `
-)
-
-// func parseLineHeaderElement(input []entity.LineElement) []entity.LineElement {
-// 	res := make([]entity.LineElement, 0)
-// 	for _, entry := range input {
-// 		if entry.Type != "text" {
-// 			res = append(res, entry)
-// 			continue
-// 		}
-// 		for _, line := range strings.Split(entry.Content, "\n") {
-// 			//
-// 		}
-// 		for _, entry := range util.FindPatternsAndNonPatterns(`^(#( )?){1,6}[^#]`, entry.Content, entity.ElementKindHeader, entity.ElementKindText) {
-// 			res = append(res, entity.LineElement{
-// 				Type:    entry.Type,
-// 				Content: entry.Content,
-// 			})
-// 		}
-// 	}
-// 	return res
-// }
-
 func parseLineHeaderElement(input []entity.LineElement) []entity.LineElement {
 	res := make([]entity.LineElement, 0)
 
@@ -51,7 +20,6 @@ func parseLineHeaderElement(input []entity.LineElement) []entity.LineElement {
 			continue
 		}
 		lines := strings.Split(entry.Content, "\n")
-		// var list []string
 		var preLines []string
 		for _, line := range lines {
 			match, err := regexp.MatchString(`^(#( )?){1,6}[^#]`, line)
