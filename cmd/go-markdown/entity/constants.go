@@ -10,6 +10,7 @@ const (
 	ElementKindItalic               = "italic"
 	ElementKindLink                 = "link"
 	ElementKindStrikethrough        = "strikethrough"
+	ElementKindInlineCode           = "inlinecode"
 
 	ElementKindText = "text"
 
