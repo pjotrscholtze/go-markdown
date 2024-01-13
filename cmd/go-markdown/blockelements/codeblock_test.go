@@ -11,16 +11,16 @@ func TestCodeblockDefinition(t *testing.T) {
 	tests := []struct {
 		name   string
 		input  string
-		expect []entity.LineElement
+		expect []entity.MarkdownElement
 	}{
 
-		{name: "No content", input: "", expect: []entity.LineElement{}},
+		{name: "No content", input: "", expect: []entity.MarkdownElement{}},
 		{name: "Simple example", input: strings.Join([]string{
 			"```",
 			"test",
 			"```",
-		}, "\n"), expect: []entity.LineElement{
-			{
+		}, "\n"), expect: []entity.MarkdownElement{
+			&entity.LineElement{
 				Type: entity.ElementKindCodeblock,
 				Content: strings.Join([]string{
 					"```",
@@ -36,9 +36,9 @@ func TestCodeblockDefinition(t *testing.T) {
 			"test",
 			"```",
 			"after",
-		}, "\n"), expect: []entity.LineElement{
-			{Type: entity.ElementKindText, Content: "before"},
-			{
+		}, "\n"), expect: []entity.MarkdownElement{
+			&entity.LineElement{Type: entity.ElementKindText, Content: "before"},
+			&entity.LineElement{
 				Type: entity.ElementKindCodeblock,
 				Content: strings.Join([]string{
 					"```",
@@ -46,7 +46,7 @@ func TestCodeblockDefinition(t *testing.T) {
 					"```",
 				}, "\n"),
 			},
-			{Type: entity.ElementKindText, Content: "after"},
+			&entity.LineElement{Type: entity.ElementKindText, Content: "after"},
 		}},
 
 		{name: "Example with surrounding text", input: strings.Join([]string{
@@ -59,9 +59,9 @@ func TestCodeblockDefinition(t *testing.T) {
 			"test2",
 			"```",
 			"after",
-		}, "\n"), expect: []entity.LineElement{
-			{Type: entity.ElementKindText, Content: "before"},
-			{
+		}, "\n"), expect: []entity.MarkdownElement{
+			&entity.LineElement{Type: entity.ElementKindText, Content: "before"},
+			&entity.LineElement{
 				Type: entity.ElementKindCodeblock,
 				Content: strings.Join([]string{
 					"```",
@@ -69,8 +69,8 @@ func TestCodeblockDefinition(t *testing.T) {
 					"```",
 				}, "\n"),
 			},
-			{Type: entity.ElementKindText, Content: "middle"},
-			{
+			&entity.LineElement{Type: entity.ElementKindText, Content: "middle"},
+			&entity.LineElement{
 				Type: entity.ElementKindCodeblock,
 				Content: strings.Join([]string{
 					"```",
@@ -78,14 +78,14 @@ func TestCodeblockDefinition(t *testing.T) {
 					"```",
 				}, "\n"),
 			},
-			{Type: entity.ElementKindText, Content: "after"},
+			&entity.LineElement{Type: entity.ElementKindText, Content: "after"},
 		}},
 		{name: "Example with language hint", input: strings.Join([]string{
 			"```json",
 			"['test']",
 			"```",
-		}, "\n"), expect: []entity.LineElement{
-			{
+		}, "\n"), expect: []entity.MarkdownElement{
+			&entity.LineElement{
 				Type: entity.ElementKindCodeblock,
 				Content: strings.Join([]string{
 					"```json",
@@ -98,7 +98,8 @@ func TestCodeblockDefinition(t *testing.T) {
 
 	for _, test := range tests {
 		t.Run(test.name, func(t *testing.T) {
-			got := parseLineCodeblockElement([]entity.LineElement{{Type: entity.ElementKindText, Content: test.input}})
+			got := parseLineCodeblockElement([]entity.MarkdownElement{
+				&entity.LineElement{Type: entity.ElementKindText, Content: test.input}})
 			if !equalResults(got, test.expect) {
 				t.Errorf("Expected %v, got %v", test.expect, got)
 			}

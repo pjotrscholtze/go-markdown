@@ -8,18 +8,18 @@ import (
 	"github.com/pjotrscholtze/go-markdown/cmd/go-markdown/entity"
 )
 
-func parseLineHeaderElement(input []entity.LineElement) []entity.LineElement {
-	res := make([]entity.LineElement, 0)
+func parseLineHeaderElement(input []entity.MarkdownElement) []entity.MarkdownElement {
+	res := make([]entity.MarkdownElement, 0)
 
 	for _, entry := range input {
-		if entry.Type != entity.ElementKindText {
+		if entry.Kind() != entity.ElementKindText {
 			res = append(res, entry)
 			continue
 		}
-		if entry.Content == "" {
+		if entry.AsMarkdownString() == "" {
 			continue
 		}
-		lines := strings.Split(entry.Content, "\n")
+		lines := strings.Split(entry.AsMarkdownString(), "\n")
 		var preLines []string
 		for _, line := range lines {
 			match, err := regexp.MatchString(`^(#( )?){1,6}[^#]`, line)
@@ -31,13 +31,13 @@ func parseLineHeaderElement(input []entity.LineElement) []entity.LineElement {
 			}
 			if match {
 				if len(preLines) > 0 {
-					res = append(res, entity.LineElement{
+					res = append(res, &entity.LineElement{
 						Type:    entity.ElementKindText,
 						Content: strings.Join(preLines, "\n"),
 					})
 					preLines = nil
 				}
-				res = append(res, entity.LineElement{
+				res = append(res, &entity.LineElement{
 					Type:    entity.ElementKindHeader,
 					Content: line,
 				})
@@ -47,7 +47,7 @@ func parseLineHeaderElement(input []entity.LineElement) []entity.LineElement {
 			}
 		}
 		if len(preLines) > 0 {
-			res = append(res, entity.LineElement{
+			res = append(res, &entity.LineElement{
 				Type:    entity.ElementKindText,
 				Content: strings.Join(preLines, "\n"),
 			})

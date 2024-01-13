@@ -5,15 +5,15 @@ import (
 	"github.com/pjotrscholtze/go-markdown/cmd/go-markdown/util"
 )
 
-func parseLineItalicAltElement(input []entity.LineElement) []entity.LineElement {
-	res := make([]entity.LineElement, 0)
+func parseLineItalicAltElement(input []entity.MarkdownElement) []entity.MarkdownElement {
+	res := make([]entity.MarkdownElement, 0)
 	for _, entry := range input {
-		if entry.Type != entity.ElementKindText {
+		if entry.Kind() != entity.ElementKindText {
 			res = append(res, entry)
 			continue
 		}
-		for _, entry := range util.FindPatternsAndNonPatterns(`_[A-Za-z0-9]+_`, entry.Content, entity.ElementKindItalic, entity.ElementKindText) {
-			res = append(res, entity.LineElement{
+		for _, entry := range util.FindPatternsAndNonPatterns(`_[A-Za-z0-9]+_`, entry.AsMarkdownString(), entity.ElementKindItalic, entity.ElementKindText) {
+			res = append(res, &entity.LineElement{
 				Type:    entry.Type,
 				Content: entry.Content,
 			})

@@ -5,15 +5,15 @@ import (
 	"github.com/pjotrscholtze/go-markdown/cmd/go-markdown/util"
 )
 
-func parseLineHorizontalLineElement(input []entity.LineElement) []entity.LineElement {
-	res := make([]entity.LineElement, 0)
+func parseLineHorizontalLineElement(input []entity.MarkdownElement) []entity.MarkdownElement {
+	res := make([]entity.MarkdownElement, 0)
 	for _, entry := range input {
-		if entry.Type != "text" {
+		if entry.Kind() != entity.ElementKindText {
 			res = append(res, entry)
 			continue
 		}
-		for _, entry := range util.FindPatternsAndNonPatterns(`((\*( )?)|(\-( )?)|(_( )?)){3,}`, entry.Content, entity.ElementKindHorizontalLine, entity.ElementKindText) {
-			res = append(res, entity.LineElement{
+		for _, entry := range util.FindPatternsAndNonPatterns(`((\*( )?)|(\-( )?)|(_( )?)){3,}`, entry.AsMarkdownString(), entity.ElementKindHorizontalLine, entity.ElementKindText) {
+			res = append(res, &entity.LineElement{
 				Type:    entry.Type,
 				Content: entry.Content,
 			})
