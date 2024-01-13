@@ -8,11 +8,11 @@ import (
 func parseLineLinkElement(input []entity.LineElement) []entity.LineElement {
 	res := make([]entity.LineElement, 0)
 	for _, entry := range input {
-		if entry.Type != "text" {
+		if entry.Type != entity.ElementKindText {
 			res = append(res, entry)
 			continue
 		}
-		for _, entry := range util.FindPatternsAndNonPatterns(`\[[^\]]*\]\([^\)]*\)`, entry.Content, "link", "text") {
+		for _, entry := range util.FindPatternsAndNonPatterns(`\[[^\]]*\]\([^\)]*\)`, entry.Content, entity.ElementKindLink, entity.ElementKindText) {
 			res = append(res, entity.LineElement{
 				Type:    entry.Type,
 				Content: entry.Content,

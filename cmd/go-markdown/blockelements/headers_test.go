@@ -54,7 +54,7 @@ Not a heading #afterwards`,
 
 	for _, test := range tests {
 		t.Run(test.name, func(t *testing.T) {
-			got := parseLineHeaderElement([]entity.LineElement{{Type: "text", Content: test.input}})
+			got := parseLineHeaderElement([]entity.LineElement{{Type: entity.ElementKindText, Content: test.input}})
 			if !equalResults(got, test.expect) {
 				t.Errorf("Expected %v, got %v", test.expect, got)
 			}

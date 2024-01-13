@@ -8,7 +8,7 @@ import (
 func parseInlineCodeElement(input []entity.LineElement) []entity.LineElement {
 	res := make([]entity.LineElement, 0)
 	for _, entry := range input {
-		if entry.Type != "text" {
+		if entry.Type != entity.ElementKindText {
 			res = append(res, entry)
 			continue
 		}

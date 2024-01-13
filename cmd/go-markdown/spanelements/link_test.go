@@ -16,7 +16,7 @@ func TestParseLineLinkElement(t *testing.T) {
 			name:  "Empty link:",
 			input: "[](http://example.com)",
 			expect: []entity.LineElement{{
-				Type:    "link",
+				Type:    entity.ElementKindLink,
 				Content: "[](http://example.com)",
 			},
 			},
@@ -25,7 +25,7 @@ func TestParseLineLinkElement(t *testing.T) {
 			name:  "No link:",
 			input: "[]()",
 			expect: []entity.LineElement{{
-				Type:    "link",
+				Type:    entity.ElementKindLink,
 				Content: "[]()",
 			},
 			},
@@ -34,7 +34,7 @@ func TestParseLineLinkElement(t *testing.T) {
 			name:  "Empty link and target:",
 			input: "[]()",
 			expect: []entity.LineElement{{
-				Type:    "link",
+				Type:    entity.ElementKindLink,
 				Content: "[]()",
 			},
 			},
@@ -43,7 +43,7 @@ func TestParseLineLinkElement(t *testing.T) {
 			name:  "Whitespace link:",
 			input: "[ ]",
 			expect: []entity.LineElement{{
-				Type:    "text",
+				Type:    entity.ElementKindText,
 				Content: "[ ]",
 			},
 			},
@@ -52,7 +52,7 @@ func TestParseLineLinkElement(t *testing.T) {
 			name:  "Whitespace target:",
 			input: "[label]( )",
 			expect: []entity.LineElement{{
-				Type:    "link",
+				Type:    entity.ElementKindLink,
 				Content: "[label]( )",
 			},
 			},
@@ -61,7 +61,7 @@ func TestParseLineLinkElement(t *testing.T) {
 			name:  "Non-ASCII characters in link label:",
 			input: "[ラベル](http://example.com)",
 			expect: []entity.LineElement{{
-				Type:    "link",
+				Type:    entity.ElementKindLink,
 				Content: "[ラベル](http://example.com)",
 			},
 			},
@@ -70,7 +70,7 @@ func TestParseLineLinkElement(t *testing.T) {
 			name:  "Non-ASCII characters in link target:",
 			input: "[label](http://例子.com)",
 			expect: []entity.LineElement{{
-				Type:    "link",
+				Type:    entity.ElementKindLink,
 				Content: "[label](http://例子.com)",
 			},
 			},
@@ -79,7 +79,7 @@ func TestParseLineLinkElement(t *testing.T) {
 			name:  "Special characters in link label:",
 			input: "[*label*](http://example.com)",
 			expect: []entity.LineElement{{
-				Type:    "link",
+				Type:    entity.ElementKindLink,
 				Content: "[*label*](http://example.com)",
 			},
 			},
@@ -88,7 +88,7 @@ func TestParseLineLinkElement(t *testing.T) {
 			name:  "Special characters in link target:",
 			input: "[label](http://ex*ample*.com)",
 			expect: []entity.LineElement{{
-				Type:    "link",
+				Type:    entity.ElementKindLink,
 				Content: "[label](http://ex*ample*.com)",
 			},
 			},
@@ -99,15 +99,15 @@ func TestParseLineLinkElement(t *testing.T) {
 			input: " Visit [Google](http://google.com) for searching the internet.",
 			expect: []entity.LineElement{
 				{
-					Type:    "text",
+					Type:    entity.ElementKindText,
 					Content: " Visit ",
 				},
 				{
-					Type:    "link",
+					Type:    entity.ElementKindLink,
 					Content: "[Google](http://google.com)",
 				},
 				{
-					Type:    "text",
+					Type:    entity.ElementKindText,
 					Content: " for searching the internet.",
 				},
 			},
@@ -117,11 +117,11 @@ func TestParseLineLinkElement(t *testing.T) {
 			input: "[Google](http://google.com) is a well-known search engine.",
 			expect: []entity.LineElement{
 				{
-					Type:    "link",
+					Type:    entity.ElementKindLink,
 					Content: "[Google](http://google.com)",
 				},
 				{
-					Type:    "text",
+					Type:    entity.ElementKindText,
 					Content: " is a well-known search engine.",
 				},
 			},
@@ -130,15 +130,15 @@ func TestParseLineLinkElement(t *testing.T) {
 			name:  "Link in the middle of a sentence:",
 			input: " Search engines like [Google](http://google.com) are essential tools.",
 			expect: []entity.LineElement{{
-				Type:    "text",
+				Type:    entity.ElementKindText,
 				Content: " Search engines like ",
 			},
 				{
-					Type:    "link",
+					Type:    entity.ElementKindLink,
 					Content: "[Google](http://google.com)",
 				},
 				{
-					Type:    "text",
+					Type:    entity.ElementKindText,
 					Content: " are essential tools.",
 				},
 			},
@@ -148,23 +148,23 @@ func TestParseLineLinkElement(t *testing.T) {
 			input: " Use [Google](http://google.com) for searching, or [BING](http://bing.com) for shopping.",
 			expect: []entity.LineElement{
 				{
-					Type:    "text",
+					Type:    entity.ElementKindText,
 					Content: " Use ",
 				},
 				{
-					Type:    "link",
+					Type:    entity.ElementKindLink,
 					Content: "[Google](http://google.com)",
 				},
 				{
-					Type:    "text",
+					Type:    entity.ElementKindText,
 					Content: " for searching, or ",
 				},
 				{
-					Type:    "link",
+					Type:    entity.ElementKindLink,
 					Content: "[BING](http://bing.com)",
 				},
 				{
-					Type:    "text",
+					Type:    entity.ElementKindText,
 					Content: " for shopping.",
 				},
 			},
@@ -174,23 +174,23 @@ func TestParseLineLinkElement(t *testing.T) {
 			input: " Use [Google](http://google.com) for searching, or [Bing!](http://bing.com) for fun.",
 			expect: []entity.LineElement{
 				{
-					Type:    "text",
+					Type:    entity.ElementKindText,
 					Content: " Use ",
 				},
 				{
-					Type:    "link",
+					Type:    entity.ElementKindLink,
 					Content: "[Google](http://google.com)",
 				},
 				{
-					Type:    "text",
+					Type:    entity.ElementKindText,
 					Content: " for searching, or ",
 				},
 				{
-					Type:    "link",
+					Type:    entity.ElementKindLink,
 					Content: "[Bing!](http://bing.com)",
 				},
 				{
-					Type:    "text",
+					Type:    entity.ElementKindText,
 					Content: " for fun.",
 				},
 			},
@@ -200,23 +200,23 @@ func TestParseLineLinkElement(t *testing.T) {
 			input: " Use [Google](http://google.com) for searching, or [Bing](http://bing!.com) for fun.",
 			expect: []entity.LineElement{
 				{
-					Type:    "text",
+					Type:    entity.ElementKindText,
 					Content: " Use ",
 				},
 				{
-					Type:    "link",
+					Type:    entity.ElementKindLink,
 					Content: "[Google](http://google.com)",
 				},
 				{
-					Type:    "text",
+					Type:    entity.ElementKindText,
 					Content: " for searching, or ",
 				},
 				{
-					Type:    "link",
+					Type:    entity.ElementKindLink,
 					Content: "[Bing](http://bing!.com)",
 				},
 				{
-					Type:    "text",
+					Type:    entity.ElementKindText,
 					Content: " for fun.",
 				},
 			},
@@ -226,23 +226,23 @@ func TestParseLineLinkElement(t *testing.T) {
 			input: " Use [Google](http://google.com) for searching, or [Bing](http://bing.com) for shopping.",
 			expect: []entity.LineElement{
 				{
-					Type:    "text",
+					Type:    entity.ElementKindText,
 					Content: " Use ",
 				},
 				{
-					Type:    "link",
+					Type:    entity.ElementKindLink,
 					Content: "[Google](http://google.com)",
 				},
 				{
-					Type:    "text",
+					Type:    entity.ElementKindText,
 					Content: " for searching, or ",
 				},
 				{
-					Type:    "link",
+					Type:    entity.ElementKindLink,
 					Content: "[Bing](http://bing.com)",
 				},
 				{
-					Type:    "text",
+					Type:    entity.ElementKindText,
 					Content: " for shopping.",
 				},
 			},
@@ -251,10 +251,10 @@ func TestParseLineLinkElement(t *testing.T) {
 			name:  "Link inside a heading:",
 			input: " # [Google](http://google.com)",
 			expect: []entity.LineElement{{
-				Type:    "text",
+				Type:    entity.ElementKindText,
 				Content: " # ",
 			}, {
-				Type:    "link",
+				Type:    entity.ElementKindLink,
 				Content: "[Google](http://google.com)",
 			},
 			},
@@ -263,10 +263,10 @@ func TestParseLineLinkElement(t *testing.T) {
 			name:  "Link inside a blockquote:",
 			input: " > Visit [Google](http://google.com)",
 			expect: []entity.LineElement{{
-				Type:    "text",
+				Type:    entity.ElementKindText,
 				Content: " > Visit ",
 			}, {
-				Type:    "link",
+				Type:    entity.ElementKindLink,
 				Content: "[Google](http://google.com)",
 			},
 			},
@@ -275,10 +275,10 @@ func TestParseLineLinkElement(t *testing.T) {
 			name:  "Link inside a task list:",
 			input: " - [x] Visit [Google](http://google.com)",
 			expect: []entity.LineElement{{
-				Type:    "text",
+				Type:    entity.ElementKindText,
 				Content: " - [x] Visit ",
 			}, {
-				Type:    "link",
+				Type:    entity.ElementKindLink,
 				Content: "[Google](http://google.com)",
 			},
 			},
@@ -287,13 +287,13 @@ func TestParseLineLinkElement(t *testing.T) {
 			name:  "Link inside a strikethrough:",
 			input: " ~~Visit [Google](http://google.com)~~",
 			expect: []entity.LineElement{{
-				Type:    "text",
+				Type:    entity.ElementKindText,
 				Content: " ~~Visit ",
 			}, {
-				Type:    "link",
+				Type:    entity.ElementKindLink,
 				Content: "[Google](http://google.com)",
 			}, {
-				Type:    "text",
+				Type:    entity.ElementKindText,
 				Content: "~~",
 			},
 			},
@@ -302,10 +302,10 @@ func TestParseLineLinkElement(t *testing.T) {
 			name:  "Link inside a subscript:",
 			input: " H~2~O + [CaCO3](http://example.com)",
 			expect: []entity.LineElement{{
-				Type:    "text",
+				Type:    entity.ElementKindText,
 				Content: " H~2~O + ",
 			}, {
-				Type:    "link",
+				Type:    entity.ElementKindLink,
 				Content: "[CaCO3](http://example.com)",
 			},
 			},
@@ -314,10 +314,10 @@ func TestParseLineLinkElement(t *testing.T) {
 			name:  "Link inside a superscript:",
 			input: " E = mc^2 + [eV](http://example.com)",
 			expect: []entity.LineElement{{
-				Type:    "text",
+				Type:    entity.ElementKindText,
 				Content: " E = mc^2 + ",
 			}, {
-				Type:    "link",
+				Type:    entity.ElementKindLink,
 				Content: "[eV](http://example.com)",
 			},
 			},
@@ -327,15 +327,15 @@ func TestParseLineLinkElement(t *testing.T) {
 			input: "This is [an example](http://example.com/ \"Title\") inline link.",
 			expect: []entity.LineElement{
 				{
-					Type:    "text",
+					Type:    entity.ElementKindText,
 					Content: "This is ",
 				},
 				{
-					Type:    "link",
+					Type:    entity.ElementKindLink,
 					Content: "[an example](http://example.com/ \"Title\")",
 				},
 				{
-					Type:    "text",
+					Type:    entity.ElementKindText,
 					Content: " inline link.",
 				},
 			},
@@ -344,7 +344,7 @@ func TestParseLineLinkElement(t *testing.T) {
 
 	for _, test := range tests {
 		t.Run(test.name, func(t *testing.T) {
-			got := parseLineLinkElement([]entity.LineElement{{Type: "text", Content: test.input}})
+			got := parseLineLinkElement([]entity.LineElement{{Type: entity.ElementKindText, Content: test.input}})
 			if !equalResults(got, test.expect) {
 				t.Errorf("Expected %v, got %v", test.expect, got)
 			}

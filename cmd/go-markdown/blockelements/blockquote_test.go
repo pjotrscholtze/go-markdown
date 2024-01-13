@@ -64,7 +64,7 @@ Next line after blockquote.`, expect: []entity.LineElement{
 
 	for _, test := range tests {
 		t.Run(test.name, func(t *testing.T) {
-			got := parseLineBlockquoteElement([]entity.LineElement{{Type: "text", Content: test.input}})
+			got := parseLineBlockquoteElement([]entity.LineElement{{Type: entity.ElementKindText, Content: test.input}})
 			if !equalResults(got, test.expect) {
 				t.Errorf("Expected %v, got %v", test.expect, got)
 			}

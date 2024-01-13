@@ -8,11 +8,11 @@ import (
 func parseLineItalicElement(input []entity.LineElement) []entity.LineElement {
 	res := make([]entity.LineElement, 0)
 	for _, entry := range input {
-		if entry.Type != "text" {
+		if entry.Type != entity.ElementKindText {
 			res = append(res, entry)
 			continue
 		}
-		for _, entry := range util.FindPatternsAndNonPatterns(`\*[A-Za-z0-9]+\*`, entry.Content, "italic", "text") {
+		for _, entry := range util.FindPatternsAndNonPatterns(`\*[A-Za-z0-9]+\*`, entry.Content, entity.ElementKindItalic, entity.ElementKindText) {
 			res = append(res, entity.LineElement{
 				Type:    entry.Type,
 				Content: entry.Content,

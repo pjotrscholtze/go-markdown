@@ -41,7 +41,7 @@ func TestParseInlineCodeElement(t *testing.T) {
 
 	for _, test := range tests {
 		t.Run(test.name, func(t *testing.T) {
-			got := parseInlineCodeElement([]entity.LineElement{{Type: "text", Content: test.input}})
+			got := parseInlineCodeElement([]entity.LineElement{{Type: entity.ElementKindText, Content: test.input}})
 			if !equalResults(got, test.expect) {
 				t.Errorf("Expected %v, got %v", test.expect, got)
 			}

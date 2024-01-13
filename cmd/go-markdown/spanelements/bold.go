@@ -8,11 +8,11 @@ import (
 func parseLineBoldElement(input []entity.LineElement) []entity.LineElement {
 	res := make([]entity.LineElement, 0)
 	for _, entry := range input {
-		if entry.Type != "text" {
+		if entry.Type != entity.ElementKindText {
 			res = append(res, entry)
 			continue
 		}
-		for _, entry := range util.FindPatternsAndNonPatterns("`[^`]*`", entry.Content, "bold", "text") {
+		for _, entry := range util.FindPatternsAndNonPatterns(`__[A-Za-z0-9]+__`, entry.Content, entity.ElementKindBold, entity.ElementKindText) {
 			res = append(res, entity.LineElement{
 				Type:    entry.Type,
 				Content: entry.Content,
