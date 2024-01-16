@@ -13,10 +13,15 @@ func parseLineLinkElement(input []entity.MarkdownElement) []entity.MarkdownEleme
 			continue
 		}
 		for _, entry := range util.FindPatternsAndNonPatterns(`\[[^\]]*\]\([^\)]*\)`, entry.AsMarkdownString(), entity.ElementKindLink, entity.ElementKindText) {
-			res = append(res, &entity.LineElement{
-				Type:    entry.Type,
-				Content: entry.Content,
-			})
+
+			if entry.Type == entity.ElementKindLink {
+				res = append(res, entity.NewLinkMarkdownElement(entry.Content))
+			} else {
+				res = append(res, &entity.LineElement{
+					Type:    entry.Type,
+					Content: entry.Content,
+				})
+			}
 		}
 	}
 	return res

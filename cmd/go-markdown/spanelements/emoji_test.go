@@ -1,7 +1,6 @@
 package spanelements
 
 import (
-	"reflect"
 	"strings"
 	"testing"
 
@@ -18,7 +17,7 @@ func TestParseLineEmojiElementNormalNontext(t *testing.T) {
 	result := parseLineEmojiElement([]entity.MarkdownElement{
 		&entity.LineElement{Type: entity.ElementKindText, Content: input},
 		&entity.LineElement{Type: "nontext", Content: "input"}})
-	if !reflect.DeepEqual(result, expectedOutput) {
+	if !equalResults(result, expectedOutput) {
 		t.Errorf("Expected %v, but got %v", expectedOutput, result)
 	}
 }
@@ -30,7 +29,7 @@ func TestParseLineEmojiElementNormal(t *testing.T) {
 	}
 	result := parseLineEmojiElement([]entity.MarkdownElement{
 		&entity.LineElement{Type: entity.ElementKindText, Content: input}})
-	if !reflect.DeepEqual(result, expectedOutput) {
+	if !equalResults(result, expectedOutput) {
 		t.Errorf("Expected %v, but got %v", expectedOutput, result)
 	}
 }
@@ -40,7 +39,7 @@ func TestParseLineEmojiElementEmptyInput(t *testing.T) {
 	expectedOutput := []entity.MarkdownElement{}
 	result := parseLineEmojiElement([]entity.MarkdownElement{
 		&entity.LineElement{Type: entity.ElementKindText, Content: input}})
-	if !reflect.DeepEqual(result, expectedOutput) {
+	if !equalResults(result, expectedOutput) {
 		t.Errorf("Expected %v, but got %v", expectedOutput, result)
 	}
 }
@@ -55,7 +54,7 @@ func TestParseLineEmojiElementWhitespaceInput(t *testing.T) {
 	}
 	result := parseLineEmojiElement([]entity.MarkdownElement{
 		&entity.LineElement{Type: entity.ElementKindText, Content: input}})
-	if !reflect.DeepEqual(result, expectedOutput) {
+	if !equalResults(result, expectedOutput) {
 		t.Errorf("Expected %v, but got %v", expectedOutput, result)
 	}
 }
@@ -69,7 +68,7 @@ func TestParseLineEmojiElementMultipleEmojis(t *testing.T) {
 	}
 	result := parseLineEmojiElement([]entity.MarkdownElement{
 		&entity.LineElement{Type: entity.ElementKindText, Content: input}})
-	if !reflect.DeepEqual(result, expectedOutput) {
+	if !equalResults(result, expectedOutput) {
 		t.Errorf("Expected %v, but got %v", expectedOutput, result)
 	}
 }
@@ -83,7 +82,7 @@ func TestParseLineEmojiElementLeadingTrailingSpaces(t *testing.T) {
 	}
 	result := parseLineEmojiElement([]entity.MarkdownElement{
 		&entity.LineElement{Type: entity.ElementKindText, Content: input}})
-	if !reflect.DeepEqual(result, expectedOutput) {
+	if !equalResults(result, expectedOutput) {
 		t.Errorf("Expected %v, but got %v", expectedOutput, result)
 	}
 }
@@ -96,7 +95,7 @@ func TestParseLineEmojiElementSpecialChars(t *testing.T) {
 	}
 	result := parseLineEmojiElement([]entity.MarkdownElement{
 		&entity.LineElement{Type: entity.ElementKindText, Content: input}})
-	if !reflect.DeepEqual(result, expectedOutput) {
+	if !equalResults(result, expectedOutput) {
 		t.Errorf("Expected %v, but got %v", expectedOutput, result)
 	}
 }
@@ -110,7 +109,7 @@ func TestParseLineEmojiElementInterspersed(t *testing.T) {
 	}
 	result := parseLineEmojiElement([]entity.MarkdownElement{
 		&entity.LineElement{Type: entity.ElementKindText, Content: input}})
-	if !reflect.DeepEqual(result, expectedOutput) {
+	if !equalResults(result, expectedOutput) {
 		t.Errorf("Expected %v, but got %v", expectedOutput, result)
 	}
 }
@@ -123,7 +122,7 @@ func TestParseLineEmojiElementOnlyEmojis(t *testing.T) {
 	}
 	result := parseLineEmojiElement([]entity.MarkdownElement{
 		&entity.LineElement{Type: entity.ElementKindText, Content: input}})
-	if !reflect.DeepEqual(result, expectedOutput) {
+	if !equalResults(result, expectedOutput) {
 		t.Errorf("Expected %v, but got %v", expectedOutput, result)
 	}
 }
@@ -135,7 +134,7 @@ func TestParseLineEmojiElementOnlyText(t *testing.T) {
 	}
 	result := parseLineEmojiElement([]entity.MarkdownElement{
 		&entity.LineElement{Type: entity.ElementKindText, Content: input}})
-	if !reflect.DeepEqual(result, expectedOutput) {
+	if !equalResults(result, expectedOutput) {
 		t.Errorf("Expected %v, but got %v", expectedOutput, result)
 	}
 }
@@ -150,7 +149,7 @@ func TestParseLineEmojiElementMultipleDifferentEmojis(t *testing.T) {
 	}
 	result := parseLineEmojiElement([]entity.MarkdownElement{
 		&entity.LineElement{Type: entity.ElementKindText, Content: input}})
-	if !reflect.DeepEqual(result, expectedOutput) {
+	if !equalResults(result, expectedOutput) {
 		t.Errorf("Expected %v, but got %v", expectedOutput, result)
 	}
 }
@@ -162,7 +161,7 @@ func TestParseLineEmojiElementOnlySpecialChars(t *testing.T) {
 	}
 	result := parseLineEmojiElement([]entity.MarkdownElement{
 		&entity.LineElement{Type: entity.ElementKindText, Content: input}})
-	if !reflect.DeepEqual(result, expectedOutput) {
+	if !equalResults(result, expectedOutput) {
 		t.Errorf("Expected %v, but got %v", expectedOutput, result)
 	}
 }
@@ -174,7 +173,7 @@ func TestParseLineEmojiElementLongLinesOfText(t *testing.T) {
 	}
 	result := parseLineEmojiElement([]entity.MarkdownElement{
 		&entity.LineElement{Type: entity.ElementKindText, Content: input}})
-	if !reflect.DeepEqual(result, expectedOutput) {
+	if !equalResults(result, expectedOutput) {
 		t.Errorf("Expected %v, but got %v", expectedOutput, result)
 	}
 }
@@ -188,7 +187,7 @@ func TestParseLineEmojiElementVeryLongStrings(t *testing.T) {
 	}
 	result := parseLineEmojiElement([]entity.MarkdownElement{
 		&entity.LineElement{Type: entity.ElementKindText, Content: input}})
-	if !reflect.DeepEqual(result, expectedOutput) {
+	if !equalResults(result, expectedOutput) {
 		t.Errorf("Expected %v, but got %v", expectedOutput, result)
 	}
 }
@@ -205,7 +204,7 @@ func TestParseLineEmojiElementLargeNumberOfEmojis(t *testing.T) {
 	}
 	result := parseLineEmojiElement([]entity.MarkdownElement{
 		&entity.LineElement{Type: entity.ElementKindText, Content: input}})
-	if !reflect.DeepEqual(result, expectedOutput) {
+	if !equalResults(result, expectedOutput) {
 		t.Errorf("Expected %v, but got %v", expectedOutput, result)
 	}
 }
@@ -217,7 +216,7 @@ func TestParseLineEmojiElementColon(t *testing.T) {
 	}
 	result := parseLineEmojiElement([]entity.MarkdownElement{
 		&entity.LineElement{Type: entity.ElementKindText, Content: input}})
-	if !reflect.DeepEqual(result, expectedOutput) {
+	if !equalResults(result, expectedOutput) {
 		t.Errorf("Expected %v, but got %v", expectedOutput, result)
 	}
 }
@@ -229,7 +228,7 @@ func TestParseLineEmojiElementColon2(t *testing.T) {
 	}
 	result := parseLineEmojiElement([]entity.MarkdownElement{
 		&entity.LineElement{Type: entity.ElementKindText, Content: input}})
-	if !reflect.DeepEqual(result, expectedOutput) {
+	if !equalResults(result, expectedOutput) {
 		t.Errorf("Expected %v, but got %v", expectedOutput, result)
 	}
 }

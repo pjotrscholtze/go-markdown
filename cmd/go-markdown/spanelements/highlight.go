@@ -13,10 +13,14 @@ func parseLineHighlightElement(input []entity.MarkdownElement) []entity.Markdown
 			continue
 		}
 		for _, entry := range util.FindPatternsAndNonPatterns(`==[^=]+==`, entry.AsMarkdownString(), entity.ElementKindHighlight, entity.ElementKindText) {
-			res = append(res, &entity.LineElement{
-				Type:    entry.Type,
-				Content: entry.Content,
-			})
+			if entry.Type == entity.ElementKindHighlight {
+				res = append(res, entity.NewHighlightMarkdownElement(entry.Content))
+			} else {
+				res = append(res, &entity.LineElement{
+					Type:    entry.Type,
+					Content: entry.Content,
+				})
+			}
 		}
 	}
 	return res

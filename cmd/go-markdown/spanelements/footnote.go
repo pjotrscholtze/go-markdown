@@ -13,10 +13,14 @@ func parseLineFootnoteElement(input []entity.MarkdownElement) []entity.MarkdownE
 			continue
 		}
 		for _, entry := range util.FindPatternsAndNonPatterns(`\[\^[^\]]+\]`, entry.AsMarkdownString(), entity.ElementKindFootnote, entity.ElementKindText) {
-			res = append(res, &entity.LineElement{
-				Type:    entry.Type,
-				Content: entry.Content,
-			})
+			if entry.Type == entity.ElementKindFootnote {
+				res = append(res, entity.NewFootnoteMarkdownElement(entry.Content))
+			} else {
+				res = append(res, &entity.LineElement{
+					Type:    entry.Type,
+					Content: entry.Content,
+				})
+			}
 		}
 	}
 	return res

@@ -1,7 +1,6 @@
 package spanelements
 
 import (
-	"reflect"
 	"strings"
 	"testing"
 
@@ -18,7 +17,7 @@ func TestParseLineItalicElementNormalNontext(t *testing.T) {
 	result := parseLineItalicElement([]entity.MarkdownElement{
 		&entity.LineElement{Type: entity.ElementKindText, Content: input},
 		&entity.LineElement{Type: "nontext", Content: "input"}})
-	if !reflect.DeepEqual(result, expectedOutput) {
+	if !equalResults(expectedOutput, result) {
 		t.Errorf("Expected %v, but got %v", expectedOutput, result)
 	}
 }
@@ -30,7 +29,7 @@ func TestParseLineItalicElementNormal(t *testing.T) {
 	}
 	result := parseLineItalicElement([]entity.MarkdownElement{
 		&entity.LineElement{Type: entity.ElementKindText, Content: input}})
-	if !reflect.DeepEqual(result, expectedOutput) {
+	if !equalResults(expectedOutput, result) {
 		t.Errorf("Expected %v, but got %v", expectedOutput, result)
 	}
 }
@@ -40,7 +39,7 @@ func TestParseLineItalicElementEmptyInput(t *testing.T) {
 	expectedOutput := []entity.MarkdownElement{}
 	result := parseLineItalicElement([]entity.MarkdownElement{
 		&entity.LineElement{Type: entity.ElementKindText, Content: input}})
-	if !reflect.DeepEqual(result, expectedOutput) {
+	if !equalResults(expectedOutput, result) {
 		t.Errorf("Expected %v, but got %v", expectedOutput, result)
 	}
 }
@@ -55,7 +54,7 @@ func TestParseLineItalicElementWhitespaceInput(t *testing.T) {
 	}
 	result := parseLineItalicElement([]entity.MarkdownElement{
 		&entity.LineElement{Type: entity.ElementKindText, Content: input}})
-	if !reflect.DeepEqual(result, expectedOutput) {
+	if !equalResults(expectedOutput, result) {
 		t.Errorf("Expected %v, but got %v", expectedOutput, result)
 	}
 }
@@ -69,7 +68,7 @@ func TestParseLineItalicElementMultipleItalics(t *testing.T) {
 	}
 	result := parseLineItalicElement([]entity.MarkdownElement{
 		&entity.LineElement{Type: entity.ElementKindText, Content: input}})
-	if !reflect.DeepEqual(result, expectedOutput) {
+	if !equalResults(expectedOutput, result) {
 		t.Errorf("Expected %v, but got %v", expectedOutput, result)
 	}
 }
@@ -83,7 +82,7 @@ func TestParseLineItalicElementLeadingTrailingSpaces(t *testing.T) {
 	}
 	result := parseLineItalicElement([]entity.MarkdownElement{
 		&entity.LineElement{Type: entity.ElementKindText, Content: input}})
-	if !reflect.DeepEqual(result, expectedOutput) {
+	if !equalResults(expectedOutput, result) {
 		t.Errorf("Expected %v, but got %v", expectedOutput, result)
 	}
 }
@@ -96,7 +95,7 @@ func TestParseLineItalicElementSpecialChars(t *testing.T) {
 	}
 	result := parseLineItalicElement([]entity.MarkdownElement{
 		&entity.LineElement{Type: entity.ElementKindText, Content: input}})
-	if !reflect.DeepEqual(result, expectedOutput) {
+	if !equalResults(expectedOutput, result) {
 		t.Errorf("Expected %v, but got %v", expectedOutput, result)
 	}
 }
@@ -110,7 +109,7 @@ func TestParseLineItalicElementInterspersed(t *testing.T) {
 	}
 	result := parseLineItalicElement([]entity.MarkdownElement{
 		&entity.LineElement{Type: entity.ElementKindText, Content: input}})
-	if !reflect.DeepEqual(result, expectedOutput) {
+	if !equalResults(expectedOutput, result) {
 		t.Errorf("Expected %v, but got %v", expectedOutput, result)
 	}
 }
@@ -123,7 +122,7 @@ func TestParseLineItalicElementOnlyItalics(t *testing.T) {
 	}
 	result := parseLineItalicElement([]entity.MarkdownElement{
 		&entity.LineElement{Type: entity.ElementKindText, Content: input}})
-	if !reflect.DeepEqual(result, expectedOutput) {
+	if !equalResults(expectedOutput, result) {
 		t.Errorf("Expected %v, but got %v", expectedOutput, result)
 	}
 }
@@ -135,7 +134,7 @@ func TestParseLineItalicElementOnlyText(t *testing.T) {
 	}
 	result := parseLineItalicElement([]entity.MarkdownElement{
 		&entity.LineElement{Type: entity.ElementKindText, Content: input}})
-	if !reflect.DeepEqual(result, expectedOutput) {
+	if !equalResults(expectedOutput, result) {
 		t.Errorf("Expected %v, but got %v", expectedOutput, result)
 	}
 }
@@ -150,7 +149,7 @@ func TestParseLineItalicElementMultipleDifferentItalics(t *testing.T) {
 	}
 	result := parseLineItalicElement([]entity.MarkdownElement{
 		&entity.LineElement{Type: entity.ElementKindText, Content: input}})
-	if !reflect.DeepEqual(result, expectedOutput) {
+	if !equalResults(expectedOutput, result) {
 		t.Errorf("Expected %v, but got %v", expectedOutput, result)
 	}
 }
@@ -162,7 +161,7 @@ func TestParseLineItalicElementOnlySpecialChars(t *testing.T) {
 	}
 	result := parseLineItalicElement([]entity.MarkdownElement{
 		&entity.LineElement{Type: entity.ElementKindText, Content: input}})
-	if !reflect.DeepEqual(result, expectedOutput) {
+	if !equalResults(expectedOutput, result) {
 		t.Errorf("Expected %v, but got %v", expectedOutput, result)
 	}
 }
@@ -174,7 +173,7 @@ func TestParseLineItalicElementLongLinesOfText(t *testing.T) {
 	}
 	result := parseLineItalicElement([]entity.MarkdownElement{
 		&entity.LineElement{Type: entity.ElementKindText, Content: input}})
-	if !reflect.DeepEqual(result, expectedOutput) {
+	if !equalResults(expectedOutput, result) {
 		t.Errorf("Expected %v, but got %v", expectedOutput, result)
 	}
 }
@@ -188,7 +187,7 @@ func TestParseLineItalicElementVeryLongStrings(t *testing.T) {
 	}
 	result := parseLineItalicElement([]entity.MarkdownElement{
 		&entity.LineElement{Type: entity.ElementKindText, Content: input}})
-	if !reflect.DeepEqual(result, expectedOutput) {
+	if !equalResults(expectedOutput, result) {
 		t.Errorf("Expected %v, but got %v", expectedOutput, result)
 	}
 }
@@ -205,7 +204,7 @@ func TestParseLineItalicElementLargeNumberOfItalics(t *testing.T) {
 	}
 	result := parseLineItalicElement([]entity.MarkdownElement{
 		&entity.LineElement{Type: entity.ElementKindText, Content: input}})
-	if !reflect.DeepEqual(result, expectedOutput) {
+	if !equalResults(expectedOutput, result) {
 		t.Errorf("Expected %v, but got %v", expectedOutput, result)
 	}
 }
@@ -217,7 +216,7 @@ func TestParseLineItalicElementColon(t *testing.T) {
 	}
 	result := parseLineItalicElement([]entity.MarkdownElement{
 		&entity.LineElement{Type: entity.ElementKindText, Content: input}})
-	if !reflect.DeepEqual(result, expectedOutput) {
+	if !equalResults(expectedOutput, result) {
 		t.Errorf("Expected %v, but got %v", expectedOutput, result)
 	}
 }
@@ -229,7 +228,7 @@ func TestParseLineItalicElementColon2(t *testing.T) {
 	}
 	result := parseLineItalicElement([]entity.MarkdownElement{
 		&entity.LineElement{Type: entity.ElementKindText, Content: input}})
-	if !reflect.DeepEqual(result, expectedOutput) {
+	if !equalResults(expectedOutput, result) {
 		t.Errorf("Expected %v, but got %v", expectedOutput, result)
 	}
 }

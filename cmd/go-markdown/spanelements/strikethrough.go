@@ -13,10 +13,14 @@ func parseLineStrikethroughElement(input []entity.MarkdownElement) []entity.Mark
 			continue
 		}
 		for _, entry := range util.FindPatternsAndNonPatterns(`~~[^~]+~~`, entry.AsMarkdownString(), entity.ElementKindStrikethrough, entity.ElementKindText) {
-			res = append(res, &entity.LineElement{
-				Type:    entry.Type,
-				Content: entry.Content,
-			})
+			if entry.Type == entity.ElementKindStrikethrough {
+				res = append(res, entity.NewStrikethroughMarkdownElement(entry.Content))
+			} else {
+				res = append(res, &entity.LineElement{
+					Type:    entry.Type,
+					Content: entry.Content,
+				})
+			}
 		}
 	}
 	return res

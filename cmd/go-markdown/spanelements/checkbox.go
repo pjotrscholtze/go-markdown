@@ -12,11 +12,15 @@ func parseLineCheckboxElement(input []entity.MarkdownElement) []entity.MarkdownE
 			res = append(res, entry)
 			continue
 		}
-		for _, entry := range util.FindPatternsAndNonPatterns(`^\[(\w|\d| )?\].*$`, entry.AsMarkdownString(), entity.ElementKindCheckbox, entity.ElementKindText) {
-			res = append(res, &entity.LineElement{
-				Type:    entry.Type,
-				Content: entry.Content,
-			})
+		for _, entry := range util.FindPatternsAndNonPatterns(`^\[[^\[]?\].*$`, entry.AsMarkdownString(), entity.ElementKindCheckbox, entity.ElementKindText) {
+			if entry.Type == entity.ElementKindCheckbox {
+				res = append(res, entity.NewCheckboxMarkdownElement(entry.Content))
+			} else {
+				res = append(res, &entity.LineElement{
+					Type:    entry.Type,
+					Content: entry.Content,
+				})
+			}
 		}
 	}
 	return res

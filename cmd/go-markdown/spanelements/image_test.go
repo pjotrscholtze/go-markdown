@@ -204,6 +204,13 @@ func equalResults(a, b []entity.MarkdownElement) bool {
 		return false
 	}
 	for i, v := range a {
+		if v.Kind() != b[i].Kind() {
+			a := v.Kind()
+			c := (b[i].Kind())
+			_ = a
+			_ = c
+			return false
+		}
 		if v.AsMarkdownString() != b[i].AsMarkdownString() {
 			return false
 		}
