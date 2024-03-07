@@ -1,6 +1,6 @@
 package entity
 
-type emojithroughMarkdownElement struct {
+type emojiMarkdownElement struct {
 	Content string
 }
 type EmojiMarkdownElement interface {
@@ -8,14 +8,14 @@ type EmojiMarkdownElement interface {
 	Kind() string
 }
 
-func (ime *emojithroughMarkdownElement) Kind() string {
+func (ime *emojiMarkdownElement) Kind() string {
 	return ElementKindEmoji
 }
-func (ime *emojithroughMarkdownElement) AsMarkdownString() string {
+func (ime *emojiMarkdownElement) AsMarkdownString() string {
 	return ":" + ime.Content + ":"
 }
 func NewEmojiMarkdownElement(input string) EmojiMarkdownElement {
-	return &emojithroughMarkdownElement{
+	return &emojiMarkdownElement{
 		Content: input[1 : len(input)-1],
 	}
 }
