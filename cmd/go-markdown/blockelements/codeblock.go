@@ -24,10 +24,7 @@ func parseLineCodeblockElement(input []entity.MarkdownElement) []entity.Markdown
 			if strings.HasPrefix(strings.TrimLeft(line, " \t"), "```") {
 				if isCodeBlock {
 					chunkOfLines = append(chunkOfLines, line)
-					res = append(res, &entity.LineElement{
-						Type:    entity.ElementKindCodeblock,
-						Content: strings.Join(chunkOfLines, "\n"),
-					})
+					res = append(res, entity.NewCodeBlockMarkdownElement(strings.Join(chunkOfLines, "\n")))
 					chunkOfLines = nil
 					isCodeBlock = false
 					continue
@@ -46,10 +43,7 @@ func parseLineCodeblockElement(input []entity.MarkdownElement) []entity.Markdown
 		}
 		if len(chunkOfLines) > 0 {
 			if isCodeBlock {
-				res = append(res, &entity.LineElement{
-					Type:    entity.ElementKindCodeblock,
-					Content: strings.Join(chunkOfLines, "\n"),
-				})
+				res = append(res, entity.NewCodeBlockMarkdownElement(strings.Join(chunkOfLines, "\n")))
 			} else {
 				res = append(res, &entity.LineElement{
 					Type:    entity.ElementKindText,

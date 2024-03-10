@@ -37,10 +37,7 @@ func parseLineHeaderElement(input []entity.MarkdownElement) []entity.MarkdownEle
 					})
 					preLines = nil
 				}
-				res = append(res, &entity.LineElement{
-					Type:    entity.ElementKindHeader,
-					Content: line,
-				})
+				res = append(res, entity.NewHeaderMarkdownElement(line))
 
 			} else {
 				preLines = append(preLines, line)

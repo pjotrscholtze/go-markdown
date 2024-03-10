@@ -30,10 +30,7 @@ func parseLineTableElement(input []entity.MarkdownElement) []entity.MarkdownElem
 						Content: strings.Join(preLines, "\n"),
 					})
 				}
-				res = append(res, &entity.LineElement{
-					Type:    entity.ElementKindTable,
-					Content: strings.Join(table, "\n"),
-				})
+				res = append(res, entity.NewTableElementMarkdownElement(strings.Join(table, "\n")))
 				preLines = []string{line}
 				table = nil
 			} else {
@@ -48,10 +45,7 @@ func parseLineTableElement(input []entity.MarkdownElement) []entity.MarkdownElem
 				})
 				preLines = []string{}
 			}
-			res = append(res, &entity.LineElement{
-				Type:    entity.ElementKindTable,
-				Content: strings.Join(table, "\n"),
-			})
+			res = append(res, entity.NewTableElementMarkdownElement(strings.Join(table, "\n")))
 		}
 		if len(preLines) > 0 {
 			res = append(res, &entity.LineElement{

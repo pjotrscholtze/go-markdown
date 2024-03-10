@@ -13,10 +13,14 @@ func parseLineHorizontalLineElement(input []entity.MarkdownElement) []entity.Mar
 			continue
 		}
 		for _, entry := range util.FindPatternsAndNonPatterns(`((\*( )?)|(\-( )?)|(_( )?)){3,}`, entry.AsMarkdownString(), entity.ElementKindHorizontalLine, entity.ElementKindText) {
-			res = append(res, &entity.LineElement{
-				Type:    entry.Type,
-				Content: entry.Content,
-			})
+			if entry.Type == entity.ElementKindHorizontalLine {
+				res = append(res, entity.NewHorizontalLineMarkdownElement(entry.Content))
+			} else {
+				res = append(res, &entity.LineElement{
+					Type:    entry.Type,
+					Content: entry.Content,
+				})
+			}
 		}
 	}
 	return res

@@ -39,10 +39,7 @@ func parseLineBlockquoteElement(input []entity.MarkdownElement) []entity.Markdow
 						Content: strings.Join(preLines, "\n"),
 					})
 				}
-				res = append(res, &entity.LineElement{
-					Type:    entity.ElementKindBlockquote,
-					Content: strings.Join(list, "\n"),
-				})
+				res = append(res, entity.NewBlockQuoteMarkdownElement(strings.Join(list, "\n")))
 				preLines = []string{line}
 				list = nil
 			} else {
@@ -57,10 +54,7 @@ func parseLineBlockquoteElement(input []entity.MarkdownElement) []entity.Markdow
 				})
 				preLines = []string{}
 			}
-			res = append(res, &entity.LineElement{
-				Type:    entity.ElementKindBlockquote,
-				Content: strings.Join(list, "\n"),
-			})
+			res = append(res, entity.NewBlockQuoteMarkdownElement(strings.Join(list, "\n")))
 		}
 		if len(preLines) > 0 {
 			res = append(res, &entity.LineElement{

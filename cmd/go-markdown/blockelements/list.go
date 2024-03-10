@@ -39,10 +39,7 @@ func parseLineListElement(input []entity.MarkdownElement) []entity.MarkdownEleme
 						Content: strings.Join(preLines, "\n"),
 					})
 				}
-				res = append(res, &entity.LineElement{
-					Type:    entity.ElementKindList,
-					Content: strings.Join(list, "\n"),
-				})
+				res = append(res, entity.NewListElementMarkdownElement(strings.Join(list, "\n")))
 				preLines = []string{line}
 				list = nil
 			} else {
@@ -57,10 +54,7 @@ func parseLineListElement(input []entity.MarkdownElement) []entity.MarkdownEleme
 				})
 				preLines = []string{}
 			}
-			res = append(res, &entity.LineElement{
-				Type:    entity.ElementKindList,
-				Content: strings.Join(list, "\n"),
-			})
+			res = append(res, entity.NewListElementMarkdownElement(strings.Join(list, "\n")))
 		}
 		if len(preLines) > 0 {
 			res = append(res, &entity.LineElement{

@@ -13,10 +13,14 @@ func parseLineTermDefinitionLineElement(input []entity.MarkdownElement) []entity
 			continue
 		}
 		for _, entry := range util.FindPatternsAndNonPatterns(`\^: .*`, entry.AsMarkdownString(), entity.ElementKindTermDefinitionLine, entity.ElementKindText) {
-			res = append(res, &entity.LineElement{
-				Type:    entry.Type,
-				Content: entry.Content,
-			})
+			if entry.Type == entity.ElementKindTermDefinitionLine {
+				res = append(res, entity.NewTermDefinitionElementMarkdownElement(entry.Content))
+			} else {
+				res = append(res, &entity.LineElement{
+					Type:    entry.Type,
+					Content: entry.Content,
+				})
+			}
 		}
 	}
 	return res
