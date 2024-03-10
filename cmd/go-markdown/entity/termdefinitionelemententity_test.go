@@ -1,21 +1,22 @@
 package entity
 
-import "testing"
+import (
+	"testing"
+)
 
-func TestCheckboxMarkdownElement(t *testing.T) {
+func TestTermDefinitionEntityMarkdownElement(t *testing.T) {
 	tests := []struct {
 		name   string
 		input  string
-		expect checkboxMarkdownElement
+		expect termDefinitionElementMarkdownElement
 	}{
-
-		{name: "Checked checkbox", input: "[x] Hello", expect: checkboxMarkdownElement{Content: " Hello", CheckContent: "x"}},
-		{name: "Unchecked checkbox", input: "[ ] Hello", expect: checkboxMarkdownElement{Content: " Hello", CheckContent: " "}},
+		{name: "No content", input: `^: `, expect: termDefinitionElementMarkdownElement{Content: ""}},
+		{name: "Content", input: `^: Markdown: is a markup language`, expect: termDefinitionElementMarkdownElement{Content: "Markdown: is a markup language"}},
 	}
 
 	for _, test := range tests {
 		t.Run(test.name, func(t *testing.T) {
-			got := NewCheckboxMarkdownElement(test.input)
+			got := NewTermDefinitionElementMarkdownElement(test.input)
 			if got.AsMarkdownString() != test.expect.AsMarkdownString() {
 				t.Errorf("AsMarkdownString() not the same. Expected %v, got %v", test.expect.AsMarkdownString(), got.AsMarkdownString())
 			}
