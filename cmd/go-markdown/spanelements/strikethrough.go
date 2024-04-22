@@ -5,7 +5,7 @@ import (
 	"github.com/pjotrscholtze/go-markdown/cmd/go-markdown/util"
 )
 
-func parseLineStrikethroughElement(input []entity.MarkdownElement) []entity.MarkdownElement {
+func ParseLineStrikethroughElement(input []entity.MarkdownElement, parserFn func(input string) []entity.MarkdownElement) []entity.MarkdownElement {
 	res := make([]entity.MarkdownElement, 0)
 	for _, entry := range input {
 		if entry.Kind() != entity.ElementKindText {
@@ -14,7 +14,7 @@ func parseLineStrikethroughElement(input []entity.MarkdownElement) []entity.Mark
 		}
 		for _, entry := range util.FindPatternsAndNonPatterns(`~~[^~]+~~`, entry.AsMarkdownString(), entity.ElementKindStrikethrough, entity.ElementKindText) {
 			if entry.Type == entity.ElementKindStrikethrough {
-				res = append(res, entity.NewStrikethroughMarkdownElement(entry.Content))
+				res = append(res, entity.NewStrikethroughMarkdownElement(entry.Content, parserFn))
 			} else {
 				res = append(res, &entity.LineElement{
 					Type:    entry.Type,

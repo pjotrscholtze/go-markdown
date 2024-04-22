@@ -1,7 +1,7 @@
 package entity
 
 type termDefinitionElementMarkdownElement struct {
-	Content string
+	Content []MarkdownElement
 }
 type TermDefinitionElementMarkdownElement interface {
 	AsMarkdownString() string
@@ -12,10 +12,10 @@ func (bqme *termDefinitionElementMarkdownElement) Kind() string {
 	return ElementKindTermDefinitionLine
 }
 func (bqme *termDefinitionElementMarkdownElement) AsMarkdownString() string {
-	return "^: " + bqme.Content
+	return "^: " + GlueToString(bqme.Content)
 }
-func NewTermDefinitionElementMarkdownElement(input string) TermDefinitionElementMarkdownElement {
+func NewTermDefinitionElementMarkdownElement(input string, parserFn func(input string) []MarkdownElement) TermDefinitionElementMarkdownElement {
 	return &termDefinitionElementMarkdownElement{
-		Content: input[3:],
+		Content: parserFn(input[3:]),
 	}
 }

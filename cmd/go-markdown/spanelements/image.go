@@ -5,7 +5,7 @@ import (
 	"github.com/pjotrscholtze/go-markdown/cmd/go-markdown/util"
 )
 
-func parseLineImageElement(input []entity.MarkdownElement) []entity.MarkdownElement {
+func ParseLineImageElement(input []entity.MarkdownElement, parserFn func(input string) []entity.MarkdownElement) []entity.MarkdownElement {
 	res := make([]entity.MarkdownElement, 0)
 	for _, entry := range input {
 		if entry.Kind() != entity.ElementKindText {
@@ -14,7 +14,7 @@ func parseLineImageElement(input []entity.MarkdownElement) []entity.MarkdownElem
 		}
 		for _, entry := range util.FindPatternsAndNonPatterns(`!\[[^\]]*\]\([^\)]*\)`, entry.AsMarkdownString(), entity.ElementKindImage, entity.ElementKindText) {
 			if entry.Type == entity.ElementKindImage {
-				res = append(res, entity.NewImageMarkdownElement(entry.Content))
+				res = append(res, entity.NewImageMarkdownElement(entry.Content, parserFn))
 			} else {
 				res = append(res, &entity.LineElement{
 					Type:    entry.Type,

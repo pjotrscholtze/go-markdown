@@ -3,9 +3,9 @@ package entity
 import "strings"
 
 type imageMarkdownElement struct {
-	Alt   string
+	Alt   []MarkdownElement
 	Url   string
-	Title *string
+	Title []MarkdownElement
 }
 type ImageMarkdownElement interface {
 	AsMarkdownString() string
@@ -14,29 +14,33 @@ type ImageMarkdownElement interface {
 	GetAlt() string
 	GetUrl() string
 	GetTitle() *string
-	SetTitle(title string)
-	SetAlt(alt string)
+	SetTitle(title string, parserFn func(input string) []MarkdownElement)
+	SetAlt(alt string, parserFn func(input string) []MarkdownElement)
 	SetUrl(url string)
 }
 
 func (icme *imageMarkdownElement) GetAlt() string {
-	return icme.Alt
+	return GlueToString(icme.Alt)
 }
 func (icme *imageMarkdownElement) GetUrl() string {
 	return icme.Url
 }
 func (icme *imageMarkdownElement) GetTitle() *string {
-	return icme.Title
+	if len(icme.Title) == 0 {
+		return nil
+	}
+	title := GlueToString(icme.Title)
+	return &title
 }
-func (icme *imageMarkdownElement) SetTitle(title string) {
+func (icme *imageMarkdownElement) SetTitle(title string, parserFn func(input string) []MarkdownElement) {
 	if len(title) == 0 {
 		icme.Title = nil
 		return
 	}
-	icme.Title = &title
+	icme.Title = parserFn(title)
 }
-func (icme *imageMarkdownElement) SetAlt(alt string) {
-	icme.Alt = alt
+func (icme *imageMarkdownElement) SetAlt(alt string, parserFn func(input string) []MarkdownElement) {
+	icme.Alt = parserFn(alt)
 }
 func (icme *imageMarkdownElement) SetUrl(url string) {
 	icme.Url = url
@@ -47,23 +51,30 @@ func (icme *imageMarkdownElement) Kind() string {
 }
 func (icme *imageMarkdownElement) AsMarkdownString() string {
 	title := ""
-	if icme.Title != nil {
-		title = " \"" + *icme.Title + "\""
+	if len(icme.Title) > 0 {
+		title = " \"" + GlueToString(icme.Title) + "\""
 	}
-	return "![" + icme.Alt + "](" + icme.Url + title + ")"
+	return "![" + GlueToString(icme.Alt) + "](" + icme.Url + title + ")"
 }
-func NewImageMarkdownElement(input string) ImageMarkdownElement {
+func NewImageMarkdownElement(input string, parserFn func(input string) []MarkdownElement) ImageMarkdownElement {
 	parts := strings.Split(input, "](")
 	urlParts := strings.Split(parts[1][:len(parts[1])-1], " \"")
 	url := urlParts[0]
-	var title *string
+	title := ""
 	if len(urlParts) > 1 {
-		protoTitle := urlParts[1][:len(urlParts[1])-1]
-		title = &protoTitle
+		title = urlParts[1][:len(urlParts[1])-1]
+	}
+	alt := []MarkdownElement{}
+	if parts[0][2:] != "" {
+		alt = parserFn(parts[0][2:])
+	}
+	titleArray := []MarkdownElement{}
+	if title != "" {
+		titleArray = parserFn(title)
 	}
 	return &imageMarkdownElement{
-		Alt:   parts[0][2:],
+		Alt:   alt,
 		Url:   url,
-		Title: title,
+		Title: titleArray,
 	}
 }

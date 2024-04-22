@@ -3,7 +3,10 @@ package entity
 import "testing"
 
 func TestImageMarkdownElement(t *testing.T) {
-	title := "example title"
+	emptyStr := RawTextMarkdownElement("")
+	spaceStr := RawTextMarkdownElement(" ")
+	relativePath := RawTextMarkdownElement("relative path")
+	title := RawTextMarkdownElement("example title")
 	tests := []struct {
 		name   string
 		input  string
@@ -11,35 +14,41 @@ func TestImageMarkdownElement(t *testing.T) {
 	}{
 
 		{name: "No content", input: "![]()", expect: imageMarkdownElement{
-			Alt:   "",
+			Alt:   []MarkdownElement{&emptyStr},
 			Url:   "",
-			Title: nil,
+			Title: []MarkdownElement{},
 		}},
 		{name: "Image with empty alt text", input: "![](image.jpg)", expect: imageMarkdownElement{
-			Alt:   "",
+			Alt:   []MarkdownElement{&emptyStr},
 			Url:   "image.jpg",
-			Title: nil,
+			Title: []MarkdownElement{},
 		}},
 		{name: "Image with space in alt text", input: "![ ](image.jpg)", expect: imageMarkdownElement{
-			Alt:   " ",
+			Alt:   []MarkdownElement{&spaceStr},
 			Url:   "image.jpg",
-			Title: nil,
+			Title: []MarkdownElement{},
 		}},
 		{name: "Image with relative path", input: "![relative path](./images/image.jpg)", expect: imageMarkdownElement{
-			Alt:   "relative path",
+			Alt:   []MarkdownElement{&relativePath},
 			Url:   "./images/image.jpg",
-			Title: nil,
+			Title: []MarkdownElement{},
 		}},
 		{name: "Image with relative path", input: "![relative path](./images/image.jpg \"example title\")", expect: imageMarkdownElement{
-			Alt:   "relative path",
+			Alt:   []MarkdownElement{&relativePath},
 			Url:   "./images/image.jpg",
-			Title: &title,
+			Title: []MarkdownElement{&title},
 		}},
 	}
 
 	for _, test := range tests {
 		t.Run(test.name, func(t *testing.T) {
-			got := NewImageMarkdownElement(test.input)
+			got := NewImageMarkdownElement(test.input,
+				func(input string) []MarkdownElement {
+					return []MarkdownElement{&LineElement{
+						Type:    ElementKindText,
+						Content: input,
+					}}
+				})
 			if got.AsMarkdownString() != test.expect.AsMarkdownString() {
 				t.Errorf("AsMarkdownString() not the same. Expected %v, got %v", test.expect.AsMarkdownString(), got.AsMarkdownString())
 			}

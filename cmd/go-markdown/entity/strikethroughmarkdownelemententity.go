@@ -1,7 +1,7 @@
 package entity
 
 type strikethroughMarkdownElement struct {
-	Content string
+	Content []MarkdownElement
 }
 type StrikethroughMarkdownElement interface {
 	AsMarkdownString() string
@@ -12,10 +12,10 @@ func (ime *strikethroughMarkdownElement) Kind() string {
 	return ElementKindStrikethrough
 }
 func (ime *strikethroughMarkdownElement) AsMarkdownString() string {
-	return "~~" + ime.Content + "~~"
+	return "~~" + GlueToString(ime.Content) + "~~"
 }
-func NewStrikethroughMarkdownElement(input string) StrikethroughMarkdownElement {
+func NewStrikethroughMarkdownElement(input string, parserFn func(input string) []MarkdownElement) StrikethroughMarkdownElement {
 	return &strikethroughMarkdownElement{
-		Content: input[2 : len(input)-2],
+		Content: parserFn(input[2 : len(input)-2]),
 	}
 }

@@ -14,9 +14,15 @@ func TestParseLineItalicElementNormalNontext(t *testing.T) {
 		&entity.LineElement{Type: entity.ElementKindItalic, Content: "*smile*"},
 		&entity.LineElement{Type: "nontext", Content: "input"},
 	}
-	result := parseLineItalicElement([]entity.MarkdownElement{
+	result := ParseLineItalicElement([]entity.MarkdownElement{
 		&entity.LineElement{Type: entity.ElementKindText, Content: input},
-		&entity.LineElement{Type: "nontext", Content: "input"}})
+		&entity.LineElement{Type: "nontext", Content: "input"}},
+		func(input string) []entity.MarkdownElement {
+			return []entity.MarkdownElement{&entity.LineElement{
+				Type:    entity.ElementKindText,
+				Content: input,
+			}}
+		})
 	if !equalResults(expectedOutput, result) {
 		t.Errorf("Expected %v, but got %v", expectedOutput, result)
 	}
@@ -27,8 +33,14 @@ func TestParseLineItalicElementNormal(t *testing.T) {
 		&entity.LineElement{Type: entity.ElementKindText, Content: "Hello "},
 		&entity.LineElement{Type: entity.ElementKindItalic, Content: "*smile*"},
 	}
-	result := parseLineItalicElement([]entity.MarkdownElement{
-		&entity.LineElement{Type: entity.ElementKindText, Content: input}})
+	result := ParseLineItalicElement([]entity.MarkdownElement{
+		&entity.LineElement{Type: entity.ElementKindText, Content: input}},
+		func(input string) []entity.MarkdownElement {
+			return []entity.MarkdownElement{&entity.LineElement{
+				Type:    entity.ElementKindText,
+				Content: input,
+			}}
+		})
 	if !equalResults(expectedOutput, result) {
 		t.Errorf("Expected %v, but got %v", expectedOutput, result)
 	}
@@ -37,8 +49,14 @@ func TestParseLineItalicElementNormal(t *testing.T) {
 func TestParseLineItalicElementEmptyInput(t *testing.T) {
 	input := ""
 	expectedOutput := []entity.MarkdownElement{}
-	result := parseLineItalicElement([]entity.MarkdownElement{
-		&entity.LineElement{Type: entity.ElementKindText, Content: input}})
+	result := ParseLineItalicElement([]entity.MarkdownElement{
+		&entity.LineElement{Type: entity.ElementKindText, Content: input}},
+		func(input string) []entity.MarkdownElement {
+			return []entity.MarkdownElement{&entity.LineElement{
+				Type:    entity.ElementKindText,
+				Content: input,
+			}}
+		})
 	if !equalResults(expectedOutput, result) {
 		t.Errorf("Expected %v, but got %v", expectedOutput, result)
 	}
@@ -52,8 +70,14 @@ func TestParseLineItalicElementWhitespaceInput(t *testing.T) {
 			Content: "  ",
 		},
 	}
-	result := parseLineItalicElement([]entity.MarkdownElement{
-		&entity.LineElement{Type: entity.ElementKindText, Content: input}})
+	result := ParseLineItalicElement([]entity.MarkdownElement{
+		&entity.LineElement{Type: entity.ElementKindText, Content: input}},
+		func(input string) []entity.MarkdownElement {
+			return []entity.MarkdownElement{&entity.LineElement{
+				Type:    entity.ElementKindText,
+				Content: input,
+			}}
+		})
 	if !equalResults(expectedOutput, result) {
 		t.Errorf("Expected %v, but got %v", expectedOutput, result)
 	}
@@ -66,8 +90,14 @@ func TestParseLineItalicElementMultipleItalics(t *testing.T) {
 		&entity.LineElement{Type: entity.ElementKindItalic, Content: "*smile*"},
 		&entity.LineElement{Type: entity.ElementKindItalic, Content: "*laugh*"},
 	}
-	result := parseLineItalicElement([]entity.MarkdownElement{
-		&entity.LineElement{Type: entity.ElementKindText, Content: input}})
+	result := ParseLineItalicElement([]entity.MarkdownElement{
+		&entity.LineElement{Type: entity.ElementKindText, Content: input}},
+		func(input string) []entity.MarkdownElement {
+			return []entity.MarkdownElement{&entity.LineElement{
+				Type:    entity.ElementKindText,
+				Content: input,
+			}}
+		})
 	if !equalResults(expectedOutput, result) {
 		t.Errorf("Expected %v, but got %v", expectedOutput, result)
 	}
@@ -80,8 +110,14 @@ func TestParseLineItalicElementLeadingTrailingSpaces(t *testing.T) {
 		&entity.LineElement{Type: entity.ElementKindItalic, Content: "*smile*"},
 		&entity.LineElement{Type: entity.ElementKindText, Content: " "},
 	}
-	result := parseLineItalicElement([]entity.MarkdownElement{
-		&entity.LineElement{Type: entity.ElementKindText, Content: input}})
+	result := ParseLineItalicElement([]entity.MarkdownElement{
+		&entity.LineElement{Type: entity.ElementKindText, Content: input}},
+		func(input string) []entity.MarkdownElement {
+			return []entity.MarkdownElement{&entity.LineElement{
+				Type:    entity.ElementKindText,
+				Content: input,
+			}}
+		})
 	if !equalResults(expectedOutput, result) {
 		t.Errorf("Expected %v, but got %v", expectedOutput, result)
 	}
@@ -93,8 +129,14 @@ func TestParseLineItalicElementSpecialChars(t *testing.T) {
 		&entity.LineElement{Type: entity.ElementKindText, Content: "Hello @username "},
 		&entity.LineElement{Type: entity.ElementKindItalic, Content: "*smile*"},
 	}
-	result := parseLineItalicElement([]entity.MarkdownElement{
-		&entity.LineElement{Type: entity.ElementKindText, Content: input}})
+	result := ParseLineItalicElement([]entity.MarkdownElement{
+		&entity.LineElement{Type: entity.ElementKindText, Content: input}},
+		func(input string) []entity.MarkdownElement {
+			return []entity.MarkdownElement{&entity.LineElement{
+				Type:    entity.ElementKindText,
+				Content: input,
+			}}
+		})
 	if !equalResults(expectedOutput, result) {
 		t.Errorf("Expected %v, but got %v", expectedOutput, result)
 	}
@@ -107,8 +149,14 @@ func TestParseLineItalicElementInterspersed(t *testing.T) {
 		&entity.LineElement{Type: entity.ElementKindText, Content: "Hello"},
 		&entity.LineElement{Type: entity.ElementKindItalic, Content: "*laugh*"},
 	}
-	result := parseLineItalicElement([]entity.MarkdownElement{
-		&entity.LineElement{Type: entity.ElementKindText, Content: input}})
+	result := ParseLineItalicElement([]entity.MarkdownElement{
+		&entity.LineElement{Type: entity.ElementKindText, Content: input}},
+		func(input string) []entity.MarkdownElement {
+			return []entity.MarkdownElement{&entity.LineElement{
+				Type:    entity.ElementKindText,
+				Content: input,
+			}}
+		})
 	if !equalResults(expectedOutput, result) {
 		t.Errorf("Expected %v, but got %v", expectedOutput, result)
 	}
@@ -120,8 +168,14 @@ func TestParseLineItalicElementOnlyItalics(t *testing.T) {
 		&entity.LineElement{Type: entity.ElementKindItalic, Content: "*smile*"},
 		&entity.LineElement{Type: entity.ElementKindItalic, Content: "*laugh*"},
 	}
-	result := parseLineItalicElement([]entity.MarkdownElement{
-		&entity.LineElement{Type: entity.ElementKindText, Content: input}})
+	result := ParseLineItalicElement([]entity.MarkdownElement{
+		&entity.LineElement{Type: entity.ElementKindText, Content: input}},
+		func(input string) []entity.MarkdownElement {
+			return []entity.MarkdownElement{&entity.LineElement{
+				Type:    entity.ElementKindText,
+				Content: input,
+			}}
+		})
 	if !equalResults(expectedOutput, result) {
 		t.Errorf("Expected %v, but got %v", expectedOutput, result)
 	}
@@ -132,8 +186,14 @@ func TestParseLineItalicElementOnlyText(t *testing.T) {
 	expectedOutput := []entity.MarkdownElement{
 		&entity.LineElement{Type: entity.ElementKindText, Content: "Hello World"},
 	}
-	result := parseLineItalicElement([]entity.MarkdownElement{
-		&entity.LineElement{Type: entity.ElementKindText, Content: input}})
+	result := ParseLineItalicElement([]entity.MarkdownElement{
+		&entity.LineElement{Type: entity.ElementKindText, Content: input}},
+		func(input string) []entity.MarkdownElement {
+			return []entity.MarkdownElement{&entity.LineElement{
+				Type:    entity.ElementKindText,
+				Content: input,
+			}}
+		})
 	if !equalResults(expectedOutput, result) {
 		t.Errorf("Expected %v, but got %v", expectedOutput, result)
 	}
@@ -147,8 +207,14 @@ func TestParseLineItalicElementMultipleDifferentItalics(t *testing.T) {
 		&entity.LineElement{Type: entity.ElementKindItalic, Content: "*laugh*"},
 		&entity.LineElement{Type: entity.ElementKindItalic, Content: "*heart*"},
 	}
-	result := parseLineItalicElement([]entity.MarkdownElement{
-		&entity.LineElement{Type: entity.ElementKindText, Content: input}})
+	result := ParseLineItalicElement([]entity.MarkdownElement{
+		&entity.LineElement{Type: entity.ElementKindText, Content: input}},
+		func(input string) []entity.MarkdownElement {
+			return []entity.MarkdownElement{&entity.LineElement{
+				Type:    entity.ElementKindText,
+				Content: input,
+			}}
+		})
 	if !equalResults(expectedOutput, result) {
 		t.Errorf("Expected %v, but got %v", expectedOutput, result)
 	}
@@ -159,8 +225,14 @@ func TestParseLineItalicElementOnlySpecialChars(t *testing.T) {
 	expectedOutput := []entity.MarkdownElement{
 		&entity.LineElement{Type: entity.ElementKindText, Content: "@username#hashtag"},
 	}
-	result := parseLineItalicElement([]entity.MarkdownElement{
-		&entity.LineElement{Type: entity.ElementKindText, Content: input}})
+	result := ParseLineItalicElement([]entity.MarkdownElement{
+		&entity.LineElement{Type: entity.ElementKindText, Content: input}},
+		func(input string) []entity.MarkdownElement {
+			return []entity.MarkdownElement{&entity.LineElement{
+				Type:    entity.ElementKindText,
+				Content: input,
+			}}
+		})
 	if !equalResults(expectedOutput, result) {
 		t.Errorf("Expected %v, but got %v", expectedOutput, result)
 	}
@@ -171,8 +243,14 @@ func TestParseLineItalicElementLongLinesOfText(t *testing.T) {
 	expectedOutput := []entity.MarkdownElement{
 		&entity.LineElement{Type: entity.ElementKindText, Content: "This is a very long line of text that contains a mix of text and Italics. Let's see how well our function handles it."},
 	}
-	result := parseLineItalicElement([]entity.MarkdownElement{
-		&entity.LineElement{Type: entity.ElementKindText, Content: input}})
+	result := ParseLineItalicElement([]entity.MarkdownElement{
+		&entity.LineElement{Type: entity.ElementKindText, Content: input}},
+		func(input string) []entity.MarkdownElement {
+			return []entity.MarkdownElement{&entity.LineElement{
+				Type:    entity.ElementKindText,
+				Content: input,
+			}}
+		})
 	if !equalResults(expectedOutput, result) {
 		t.Errorf("Expected %v, but got %v", expectedOutput, result)
 	}
@@ -185,8 +263,14 @@ func TestParseLineItalicElementVeryLongStrings(t *testing.T) {
 		&entity.LineElement{Type: entity.ElementKindItalic, Content: "*smile*"},
 		&entity.LineElement{Type: entity.ElementKindText, Content: strings.Repeat("b", 100000)},
 	}
-	result := parseLineItalicElement([]entity.MarkdownElement{
-		&entity.LineElement{Type: entity.ElementKindText, Content: input}})
+	result := ParseLineItalicElement([]entity.MarkdownElement{
+		&entity.LineElement{Type: entity.ElementKindText, Content: input}},
+		func(input string) []entity.MarkdownElement {
+			return []entity.MarkdownElement{&entity.LineElement{
+				Type:    entity.ElementKindText,
+				Content: input,
+			}}
+		})
 	if !equalResults(expectedOutput, result) {
 		t.Errorf("Expected %v, but got %v", expectedOutput, result)
 	}
@@ -202,8 +286,14 @@ func TestParseLineItalicElementLargeNumberOfItalics(t *testing.T) {
 		&entity.LineElement{Type: entity.ElementKindItalic, Content: "*grinning*"},
 		&entity.LineElement{Type: entity.ElementKindItalic, Content: "*rofl*"},
 	}
-	result := parseLineItalicElement([]entity.MarkdownElement{
-		&entity.LineElement{Type: entity.ElementKindText, Content: input}})
+	result := ParseLineItalicElement([]entity.MarkdownElement{
+		&entity.LineElement{Type: entity.ElementKindText, Content: input}},
+		func(input string) []entity.MarkdownElement {
+			return []entity.MarkdownElement{&entity.LineElement{
+				Type:    entity.ElementKindText,
+				Content: input,
+			}}
+		})
 	if !equalResults(expectedOutput, result) {
 		t.Errorf("Expected %v, but got %v", expectedOutput, result)
 	}
@@ -214,8 +304,14 @@ func TestParseLineItalicElementColon(t *testing.T) {
 	expectedOutput := []entity.MarkdownElement{
 		&entity.LineElement{Type: entity.ElementKindText, Content: "Hello* smile "},
 	}
-	result := parseLineItalicElement([]entity.MarkdownElement{
-		&entity.LineElement{Type: entity.ElementKindText, Content: input}})
+	result := ParseLineItalicElement([]entity.MarkdownElement{
+		&entity.LineElement{Type: entity.ElementKindText, Content: input}},
+		func(input string) []entity.MarkdownElement {
+			return []entity.MarkdownElement{&entity.LineElement{
+				Type:    entity.ElementKindText,
+				Content: input,
+			}}
+		})
 	if !equalResults(expectedOutput, result) {
 		t.Errorf("Expected %v, but got %v", expectedOutput, result)
 	}
@@ -226,8 +322,14 @@ func TestParseLineItalicElementColon2(t *testing.T) {
 	expectedOutput := []entity.MarkdownElement{
 		&entity.LineElement{Type: entity.ElementKindText, Content: "Hello* smile, blah* testing "},
 	}
-	result := parseLineItalicElement([]entity.MarkdownElement{
-		&entity.LineElement{Type: entity.ElementKindText, Content: input}})
+	result := ParseLineItalicElement([]entity.MarkdownElement{
+		&entity.LineElement{Type: entity.ElementKindText, Content: input}},
+		func(input string) []entity.MarkdownElement {
+			return []entity.MarkdownElement{&entity.LineElement{
+				Type:    entity.ElementKindText,
+				Content: input,
+			}}
+		})
 	if !equalResults(expectedOutput, result) {
 		t.Errorf("Expected %v, but got %v", expectedOutput, result)
 	}

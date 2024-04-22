@@ -14,9 +14,15 @@ func TestParseLineBoldElementNormalNontext(t *testing.T) {
 		&entity.LineElement{Type: entity.ElementKindBold, Content: "__smile__"},
 		&entity.LineElement{Type: "nontext", Content: "input"},
 	}
-	result := parseLineBoldElement([]entity.MarkdownElement{
+	result := ParseLineBoldElement([]entity.MarkdownElement{
 		&entity.LineElement{Type: entity.ElementKindText, Content: input},
-		&entity.LineElement{Type: "nontext", Content: "input"}})
+		&entity.LineElement{Type: "nontext", Content: "input"}},
+		func(input string) []entity.MarkdownElement {
+			return []entity.MarkdownElement{&entity.LineElement{
+				Type:    entity.ElementKindText,
+				Content: input,
+			}}
+		})
 
 	if !equalResults(result, expectedOutput) {
 		t.Errorf("Expected %v, got %v", expectedOutput, result)
@@ -28,8 +34,14 @@ func TestParseLineBoldElementNormal(t *testing.T) {
 		&entity.LineElement{Type: entity.ElementKindText, Content: "Hello "},
 		&entity.LineElement{Type: entity.ElementKindBold, Content: "__smile__"},
 	}
-	result := parseLineBoldElement([]entity.MarkdownElement{
-		&entity.LineElement{Type: entity.ElementKindText, Content: input}})
+	result := ParseLineBoldElement([]entity.MarkdownElement{
+		&entity.LineElement{Type: entity.ElementKindText, Content: input}},
+		func(input string) []entity.MarkdownElement {
+			return []entity.MarkdownElement{&entity.LineElement{
+				Type:    entity.ElementKindText,
+				Content: input,
+			}}
+		})
 
 	if !equalResults(result, expectedOutput) {
 		t.Errorf("Expected %v, got %v", expectedOutput, result)
@@ -39,8 +51,14 @@ func TestParseLineBoldElementNormal(t *testing.T) {
 func TestParseLineBoldElementEmptyInput(t *testing.T) {
 	input := ""
 	expectedOutput := []entity.MarkdownElement{}
-	result := parseLineBoldElement([]entity.MarkdownElement{
-		&entity.LineElement{Type: entity.ElementKindText, Content: input}})
+	result := ParseLineBoldElement([]entity.MarkdownElement{
+		&entity.LineElement{Type: entity.ElementKindText, Content: input}},
+		func(input string) []entity.MarkdownElement {
+			return []entity.MarkdownElement{&entity.LineElement{
+				Type:    entity.ElementKindText,
+				Content: input,
+			}}
+		})
 
 	if !equalResults(result, expectedOutput) {
 		t.Errorf("Expected %v, got %v", expectedOutput, result)
@@ -55,8 +73,14 @@ func TestParseLineBoldElementWhitespaceInput(t *testing.T) {
 			Content: "  ",
 		},
 	}
-	result := parseLineBoldElement([]entity.MarkdownElement{
-		&entity.LineElement{Type: entity.ElementKindText, Content: input}})
+	result := ParseLineBoldElement([]entity.MarkdownElement{
+		&entity.LineElement{Type: entity.ElementKindText, Content: input}},
+		func(input string) []entity.MarkdownElement {
+			return []entity.MarkdownElement{&entity.LineElement{
+				Type:    entity.ElementKindText,
+				Content: input,
+			}}
+		})
 
 	if !equalResults(result, expectedOutput) {
 		t.Errorf("Expected %v, got %v", expectedOutput, result)
@@ -70,8 +94,14 @@ func TestParseLineBoldElementMultipleItalics(t *testing.T) {
 		&entity.LineElement{Type: entity.ElementKindBold, Content: "__smile__"},
 		&entity.LineElement{Type: entity.ElementKindBold, Content: "__laugh__"},
 	}
-	result := parseLineBoldElement([]entity.MarkdownElement{
-		&entity.LineElement{Type: entity.ElementKindText, Content: input}})
+	result := ParseLineBoldElement([]entity.MarkdownElement{
+		&entity.LineElement{Type: entity.ElementKindText, Content: input}},
+		func(input string) []entity.MarkdownElement {
+			return []entity.MarkdownElement{&entity.LineElement{
+				Type:    entity.ElementKindText,
+				Content: input,
+			}}
+		})
 
 	if !equalResults(result, expectedOutput) {
 		t.Errorf("Expected %v, got %v", expectedOutput, result)
@@ -85,8 +115,14 @@ func TestParseLineBoldElementLeadingTrailingSpaces(t *testing.T) {
 		&entity.LineElement{Type: entity.ElementKindBold, Content: "__smile__"},
 		&entity.LineElement{Type: entity.ElementKindText, Content: " "},
 	}
-	result := parseLineBoldElement([]entity.MarkdownElement{
-		&entity.LineElement{Type: entity.ElementKindText, Content: input}})
+	result := ParseLineBoldElement([]entity.MarkdownElement{
+		&entity.LineElement{Type: entity.ElementKindText, Content: input}},
+		func(input string) []entity.MarkdownElement {
+			return []entity.MarkdownElement{&entity.LineElement{
+				Type:    entity.ElementKindText,
+				Content: input,
+			}}
+		})
 
 	if !equalResults(result, expectedOutput) {
 		t.Errorf("Expected %v, got %v", expectedOutput, result)
@@ -99,8 +135,14 @@ func TestParseLineBoldElementSpecialChars(t *testing.T) {
 		&entity.LineElement{Type: entity.ElementKindText, Content: "Hello @username "},
 		&entity.LineElement{Type: entity.ElementKindBold, Content: "__smile__"},
 	}
-	result := parseLineBoldElement([]entity.MarkdownElement{
-		&entity.LineElement{Type: entity.ElementKindText, Content: input}})
+	result := ParseLineBoldElement([]entity.MarkdownElement{
+		&entity.LineElement{Type: entity.ElementKindText, Content: input}},
+		func(input string) []entity.MarkdownElement {
+			return []entity.MarkdownElement{&entity.LineElement{
+				Type:    entity.ElementKindText,
+				Content: input,
+			}}
+		})
 
 	if !equalResults(result, expectedOutput) {
 		t.Errorf("Expected %v, got %v", expectedOutput, result)
@@ -114,8 +156,14 @@ func TestParseLineBoldElementInterspersed(t *testing.T) {
 		&entity.LineElement{Type: entity.ElementKindText, Content: "Hello"},
 		&entity.LineElement{Type: entity.ElementKindBold, Content: "__laugh__"},
 	}
-	result := parseLineBoldElement([]entity.MarkdownElement{
-		&entity.LineElement{Type: entity.ElementKindText, Content: input}})
+	result := ParseLineBoldElement([]entity.MarkdownElement{
+		&entity.LineElement{Type: entity.ElementKindText, Content: input}},
+		func(input string) []entity.MarkdownElement {
+			return []entity.MarkdownElement{&entity.LineElement{
+				Type:    entity.ElementKindText,
+				Content: input,
+			}}
+		})
 
 	if !equalResults(result, expectedOutput) {
 		t.Errorf("Expected %v, got %v", expectedOutput, result)
@@ -128,8 +176,14 @@ func TestParseLineBoldElementOnlyItalics(t *testing.T) {
 		&entity.LineElement{Type: entity.ElementKindBold, Content: "__smile__"},
 		&entity.LineElement{Type: entity.ElementKindBold, Content: "__laugh__"},
 	}
-	result := parseLineBoldElement([]entity.MarkdownElement{
-		&entity.LineElement{Type: entity.ElementKindText, Content: input}})
+	result := ParseLineBoldElement([]entity.MarkdownElement{
+		&entity.LineElement{Type: entity.ElementKindText, Content: input}},
+		func(input string) []entity.MarkdownElement {
+			return []entity.MarkdownElement{&entity.LineElement{
+				Type:    entity.ElementKindText,
+				Content: input,
+			}}
+		})
 
 	if !equalResults(result, expectedOutput) {
 		t.Errorf("Expected %v, got %v", expectedOutput, result)
@@ -141,8 +195,14 @@ func TestParseLineBoldElementOnlyText(t *testing.T) {
 	expectedOutput := []entity.MarkdownElement{
 		&entity.LineElement{Type: entity.ElementKindText, Content: "Hello World"},
 	}
-	result := parseLineBoldElement([]entity.MarkdownElement{
-		&entity.LineElement{Type: entity.ElementKindText, Content: input}})
+	result := ParseLineBoldElement([]entity.MarkdownElement{
+		&entity.LineElement{Type: entity.ElementKindText, Content: input}},
+		func(input string) []entity.MarkdownElement {
+			return []entity.MarkdownElement{&entity.LineElement{
+				Type:    entity.ElementKindText,
+				Content: input,
+			}}
+		})
 
 	if !equalResults(result, expectedOutput) {
 		t.Errorf("Expected %v, got %v", expectedOutput, result)
@@ -157,8 +217,14 @@ func TestParseLineBoldElementMultipleDifferentItalics(t *testing.T) {
 		&entity.LineElement{Type: entity.ElementKindBold, Content: "__laugh__"},
 		&entity.LineElement{Type: entity.ElementKindBold, Content: "__heart__"},
 	}
-	result := parseLineBoldElement([]entity.MarkdownElement{
-		&entity.LineElement{Type: entity.ElementKindText, Content: input}})
+	result := ParseLineBoldElement([]entity.MarkdownElement{
+		&entity.LineElement{Type: entity.ElementKindText, Content: input}},
+		func(input string) []entity.MarkdownElement {
+			return []entity.MarkdownElement{&entity.LineElement{
+				Type:    entity.ElementKindText,
+				Content: input,
+			}}
+		})
 
 	if !equalResults(result, expectedOutput) {
 		t.Errorf("Expected %v, got %v", expectedOutput, result)
@@ -170,8 +236,14 @@ func TestParseLineBoldElementOnlySpecialChars(t *testing.T) {
 	expectedOutput := []entity.MarkdownElement{
 		&entity.LineElement{Type: entity.ElementKindText, Content: "@username#hashtag"},
 	}
-	result := parseLineBoldElement([]entity.MarkdownElement{
-		&entity.LineElement{Type: entity.ElementKindText, Content: input}})
+	result := ParseLineBoldElement([]entity.MarkdownElement{
+		&entity.LineElement{Type: entity.ElementKindText, Content: input}},
+		func(input string) []entity.MarkdownElement {
+			return []entity.MarkdownElement{&entity.LineElement{
+				Type:    entity.ElementKindText,
+				Content: input,
+			}}
+		})
 
 	if !equalResults(result, expectedOutput) {
 		t.Errorf("Expected %v, got %v", expectedOutput, result)
@@ -183,8 +255,14 @@ func TestParseLineBoldElementLongLinesOfText(t *testing.T) {
 	expectedOutput := []entity.MarkdownElement{
 		&entity.LineElement{Type: entity.ElementKindText, Content: "This is a very long line of text that contains a mix of text and Italics. Let's see how well our function handles it."},
 	}
-	result := parseLineBoldElement([]entity.MarkdownElement{
-		&entity.LineElement{Type: entity.ElementKindText, Content: input}})
+	result := ParseLineBoldElement([]entity.MarkdownElement{
+		&entity.LineElement{Type: entity.ElementKindText, Content: input}},
+		func(input string) []entity.MarkdownElement {
+			return []entity.MarkdownElement{&entity.LineElement{
+				Type:    entity.ElementKindText,
+				Content: input,
+			}}
+		})
 
 	if !equalResults(result, expectedOutput) {
 		t.Errorf("Expected %v, got %v", expectedOutput, result)
@@ -198,8 +276,14 @@ func TestParseLineBoldElementVeryLongStrings(t *testing.T) {
 		&entity.LineElement{Type: entity.ElementKindBold, Content: "__smile__"},
 		&entity.LineElement{Type: entity.ElementKindText, Content: strings.Repeat("b", 100000)},
 	}
-	result := parseLineBoldElement([]entity.MarkdownElement{
-		&entity.LineElement{Type: entity.ElementKindText, Content: input}})
+	result := ParseLineBoldElement([]entity.MarkdownElement{
+		&entity.LineElement{Type: entity.ElementKindText, Content: input}},
+		func(input string) []entity.MarkdownElement {
+			return []entity.MarkdownElement{&entity.LineElement{
+				Type:    entity.ElementKindText,
+				Content: input,
+			}}
+		})
 
 	if !equalResults(result, expectedOutput) {
 		t.Errorf("Expected %v, got %v", expectedOutput, result)
@@ -216,8 +300,14 @@ func TestParseLineBoldElementLargeNumberOfItalics(t *testing.T) {
 		&entity.LineElement{Type: entity.ElementKindBold, Content: "__grinning__"},
 		&entity.LineElement{Type: entity.ElementKindBold, Content: "__rofl__"},
 	}
-	result := parseLineBoldElement([]entity.MarkdownElement{
-		&entity.LineElement{Type: entity.ElementKindText, Content: input}})
+	result := ParseLineBoldElement([]entity.MarkdownElement{
+		&entity.LineElement{Type: entity.ElementKindText, Content: input}},
+		func(input string) []entity.MarkdownElement {
+			return []entity.MarkdownElement{&entity.LineElement{
+				Type:    entity.ElementKindText,
+				Content: input,
+			}}
+		})
 
 	if !equalResults(result, expectedOutput) {
 		t.Errorf("Expected %v, got %v", expectedOutput, result)
@@ -229,8 +319,14 @@ func TestParseLineBoldElementColon(t *testing.T) {
 	expectedOutput := []entity.MarkdownElement{
 		&entity.LineElement{Type: entity.ElementKindText, Content: "Hello__ smile "},
 	}
-	result := parseLineBoldElement([]entity.MarkdownElement{
-		&entity.LineElement{Type: entity.ElementKindText, Content: input}})
+	result := ParseLineBoldElement([]entity.MarkdownElement{
+		&entity.LineElement{Type: entity.ElementKindText, Content: input}},
+		func(input string) []entity.MarkdownElement {
+			return []entity.MarkdownElement{&entity.LineElement{
+				Type:    entity.ElementKindText,
+				Content: input,
+			}}
+		})
 
 	if !equalResults(result, expectedOutput) {
 		t.Errorf("Expected %v, got %v", expectedOutput, result)
@@ -242,8 +338,14 @@ func TestParseLineBoldElementColon2(t *testing.T) {
 	expectedOutput := []entity.MarkdownElement{
 		&entity.LineElement{Type: entity.ElementKindText, Content: "Hello__ smile, blah__ testing "},
 	}
-	result := parseLineBoldElement([]entity.MarkdownElement{
-		&entity.LineElement{Type: entity.ElementKindText, Content: input}})
+	result := ParseLineBoldElement([]entity.MarkdownElement{
+		&entity.LineElement{Type: entity.ElementKindText, Content: input}},
+		func(input string) []entity.MarkdownElement {
+			return []entity.MarkdownElement{&entity.LineElement{
+				Type:    entity.ElementKindText,
+				Content: input,
+			}}
+		})
 
 	if !equalResults(result, expectedOutput) {
 		t.Errorf("Expected %v, got %v", expectedOutput, result)

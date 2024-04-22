@@ -2,7 +2,7 @@ package entity
 
 type boldMarkdownElement struct {
 	WrappingSymbol rune
-	Content        string
+	Content        []MarkdownElement
 }
 type BoldMarkdownElement interface {
 	AsMarkdownString() string
@@ -22,14 +22,14 @@ func (bme *boldMarkdownElement) SetWrappingSymbolAsRune(symb rune) {
 }
 func (bme *boldMarkdownElement) AsMarkdownString() string {
 	wrappingSymbol := string(bme.WrappingSymbol) + string(bme.WrappingSymbol)
-	return wrappingSymbol + bme.Content + wrappingSymbol
+	return wrappingSymbol + GlueToString(bme.Content) + wrappingSymbol
 }
-func NewBoldMarkdownElement(input string) BoldMarkdownElement {
+func NewBoldMarkdownElement(input string, parserFn func(input string) []MarkdownElement) BoldMarkdownElement {
 	inputAsRunes := []rune(input)
 	symbol := inputAsRunes[0]
 	content := string(inputAsRunes[2 : len(inputAsRunes)-2])
 	return &boldMarkdownElement{
 		WrappingSymbol: symbol,
-		Content:        content,
+		Content:        parserFn(content),
 	}
 }

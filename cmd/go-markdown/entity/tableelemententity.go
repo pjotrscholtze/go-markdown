@@ -14,7 +14,8 @@ func (bqme *tableElementMarkdownElement) Kind() string {
 func (bqme *tableElementMarkdownElement) AsMarkdownString() string {
 	return bqme.Content
 }
-func NewTableElementMarkdownElement(input string) TableElementMarkdownElement {
+func NewTableElementMarkdownElement(input string, parserFn func(input string) []MarkdownElement) TableElementMarkdownElement {
+	// @todo properly parse the table here, then parseFn can be used...
 	return &tableElementMarkdownElement{
 		Content: input,
 	}

@@ -8,7 +8,7 @@ import (
 	"github.com/pjotrscholtze/go-markdown/cmd/go-markdown/entity"
 )
 
-func parseLineListElement(input []entity.MarkdownElement) []entity.MarkdownElement {
+func ParseLineListElement(input []entity.MarkdownElement, parserFn func(input string) []entity.MarkdownElement) []entity.MarkdownElement {
 	res := make([]entity.MarkdownElement, 0)
 
 	for _, entry := range input {
@@ -39,7 +39,7 @@ func parseLineListElement(input []entity.MarkdownElement) []entity.MarkdownEleme
 						Content: strings.Join(preLines, "\n"),
 					})
 				}
-				res = append(res, entity.NewListElementMarkdownElement(strings.Join(list, "\n")))
+				res = append(res, entity.NewListElementMarkdownElement(strings.Join(list, "\n"), parserFn))
 				preLines = []string{line}
 				list = nil
 			} else {
@@ -54,7 +54,7 @@ func parseLineListElement(input []entity.MarkdownElement) []entity.MarkdownEleme
 				})
 				preLines = []string{}
 			}
-			res = append(res, entity.NewListElementMarkdownElement(strings.Join(list, "\n")))
+			res = append(res, entity.NewListElementMarkdownElement(strings.Join(list, "\n"), parserFn))
 		}
 		if len(preLines) > 0 {
 			res = append(res, &entity.LineElement{

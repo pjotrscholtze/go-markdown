@@ -1,7 +1,7 @@
 package entity
 
 type listElementMarkdownElement struct {
-	Content string
+	Content []MarkdownElement
 }
 type ListElementMarkdownElement interface {
 	AsMarkdownString() string
@@ -12,10 +12,10 @@ func (bqme *listElementMarkdownElement) Kind() string {
 	return ElementKindList
 }
 func (bqme *listElementMarkdownElement) AsMarkdownString() string {
-	return bqme.Content
+	return GlueToString(bqme.Content)
 }
-func NewListElementMarkdownElement(input string) ListElementMarkdownElement {
+func NewListElementMarkdownElement(input string, parserFn func(input string) []MarkdownElement) ListElementMarkdownElement {
 	return &listElementMarkdownElement{
-		Content: input,
+		Content: parserFn(input),
 	}
 }

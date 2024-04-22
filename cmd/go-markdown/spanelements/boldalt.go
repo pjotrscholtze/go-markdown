@@ -5,7 +5,7 @@ import (
 	"github.com/pjotrscholtze/go-markdown/cmd/go-markdown/util"
 )
 
-func parseLineBoldAltElement(input []entity.MarkdownElement) []entity.MarkdownElement {
+func ParseLineBoldAltElement(input []entity.MarkdownElement, parserFn func(input string) []entity.MarkdownElement) []entity.MarkdownElement {
 	res := make([]entity.MarkdownElement, 0)
 	for _, entry := range input {
 		if entry.Kind() != entity.ElementKindText {
@@ -14,7 +14,7 @@ func parseLineBoldAltElement(input []entity.MarkdownElement) []entity.MarkdownEl
 		}
 		for _, entry := range util.FindPatternsAndNonPatterns(`\*\*[A-Za-z0-9]+\*\*`, entry.AsMarkdownString(), entity.ElementKindBold, entity.ElementKindText) {
 			if entry.Type == entity.ElementKindBold {
-				res = append(res, entity.NewBoldMarkdownElement(entry.Content))
+				res = append(res, entity.NewBoldMarkdownElement(entry.Content, parserFn))
 			} else {
 				res = append(res, &entity.LineElement{
 					Type:    entry.Type,

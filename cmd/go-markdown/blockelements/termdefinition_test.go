@@ -24,15 +24,27 @@ func TestTermDefinition(t *testing.T) {
 			"after",
 		}, "\n"), expect: []entity.MarkdownElement{
 			&entity.LineElement{Type: entity.ElementKindText, Content: "before\n"},
-			&entity.LineElement{Type: entity.ElementKindTermDefinitionLine, Content: "^: Markdown: is a markup language"},
+			entity.NewTermDefinitionElementMarkdownElement("^: Markdown: is a markup language",
+				func(input string) []entity.MarkdownElement {
+					return []entity.MarkdownElement{&entity.LineElement{
+						Type:    entity.ElementKindText,
+						Content: input,
+					}}
+				}),
 			&entity.LineElement{Type: entity.ElementKindText, Content: "\nafter"},
 		}},
 	}
 
 	for _, test := range tests {
 		t.Run(test.name, func(t *testing.T) {
-			got := parseLineTermDefinitionLineElement([]entity.MarkdownElement{
-				&entity.LineElement{Type: "text", Content: test.input}})
+			got := ParseLineTermDefinitionLineElement([]entity.MarkdownElement{
+				&entity.LineElement{Type: "text", Content: test.input}},
+				func(input string) []entity.MarkdownElement {
+					return []entity.MarkdownElement{&entity.LineElement{
+						Type:    entity.ElementKindText,
+						Content: input,
+					}}
+				})
 			if !equalResults(got, test.expect) {
 				t.Errorf("Expected %v, got %v", test.expect, got)
 			}

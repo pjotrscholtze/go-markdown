@@ -1,7 +1,7 @@
 package entity
 
 type highlightMarkdownElement struct {
-	Content string
+	Content []MarkdownElement
 }
 type HighlightMarkdownElement interface {
 	AsMarkdownString() string
@@ -12,10 +12,10 @@ func (icme *highlightMarkdownElement) Kind() string {
 	return ElementKindHighlight
 }
 func (icme *highlightMarkdownElement) AsMarkdownString() string {
-	return "==" + icme.Content + "=="
+	return "==" + GlueToString(icme.Content) + "=="
 }
-func NewHighlightMarkdownElement(input string) HighlightMarkdownElement {
+func NewHighlightMarkdownElement(input string, parserFn func(input string) []MarkdownElement) HighlightMarkdownElement {
 	return &highlightMarkdownElement{
-		Content: input[2 : len(input)-2],
+		Content: parserFn(input[2 : len(input)-2]),
 	}
 }

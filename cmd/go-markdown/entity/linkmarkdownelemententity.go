@@ -3,9 +3,9 @@ package entity
 import "strings"
 
 type linkMarkdownElement struct {
-	Content string
+	Content []MarkdownElement
 	Url     string
-	Title   *string
+	Title   []MarkdownElement
 }
 type LinkMarkdownElement interface {
 	AsMarkdownString() string
@@ -14,29 +14,33 @@ type LinkMarkdownElement interface {
 	GetContent() string
 	GetUrl() string
 	GetTitle() *string
-	SetTitle(title string)
-	SetContent(Content string)
+	SetTitle(title string, parserFn func(input string) []MarkdownElement)
+	SetContent(Content string, parserFn func(input string) []MarkdownElement)
 	SetUrl(url string)
 }
 
 func (icme *linkMarkdownElement) GetContent() string {
-	return icme.Content
+	return GlueToString(icme.Content)
 }
 func (icme *linkMarkdownElement) GetUrl() string {
 	return icme.Url
 }
 func (icme *linkMarkdownElement) GetTitle() *string {
-	return icme.Title
+	if len(icme.Title) == 0 {
+		return nil
+	}
+	title := GlueToString(icme.Title)
+	return &title
 }
-func (icme *linkMarkdownElement) SetTitle(title string) {
+func (icme *linkMarkdownElement) SetTitle(title string, parserFn func(input string) []MarkdownElement) {
 	if len(title) == 0 {
 		icme.Title = nil
 		return
 	}
-	icme.Title = &title
+	icme.Title = parserFn(title)
 }
-func (icme *linkMarkdownElement) SetContent(Content string) {
-	icme.Content = Content
+func (icme *linkMarkdownElement) SetContent(Content string, parserFn func(input string) []MarkdownElement) {
+	icme.Content = parserFn(Content)
 }
 func (icme *linkMarkdownElement) SetUrl(url string) {
 	icme.Url = url
@@ -47,23 +51,29 @@ func (icme *linkMarkdownElement) Kind() string {
 }
 func (icme *linkMarkdownElement) AsMarkdownString() string {
 	title := ""
-	if icme.Title != nil {
-		title = " \"" + *icme.Title + "\""
+	if len(icme.Title) > 0 {
+		title = " \"" + GlueToString(icme.Title) + "\""
+		if title == ` ""` {
+			title = ""
+		}
 	}
-	return "[" + icme.Content + "](" + icme.Url + title + ")"
+	return "[" + GlueToString(icme.Content) + "](" + icme.Url + title + ")"
 }
-func NewLinkMarkdownElement(input string) LinkMarkdownElement {
+func NewLinkMarkdownElement(input string, parserFn func(input string) []MarkdownElement) LinkMarkdownElement {
 	parts := strings.Split(input, "](")
 	urlParts := strings.Split(parts[1][:len(parts[1])-1], " \"")
 	url := urlParts[0]
-	var title *string
+	title := ""
 	if len(urlParts) > 1 {
-		protoTitle := urlParts[1][:len(urlParts[1])-1]
-		title = &protoTitle
+		title = urlParts[1][:len(urlParts[1])-1]
+	}
+	titleArray := parserFn(title)
+	if GlueToString(titleArray) == "" {
+		titleArray = []MarkdownElement{}
 	}
 	return &linkMarkdownElement{
-		Content: parts[0][1:],
+		Content: parserFn(parts[0][1:]),
 		Url:     url,
-		Title:   title,
+		Title:   titleArray,
 	}
 }

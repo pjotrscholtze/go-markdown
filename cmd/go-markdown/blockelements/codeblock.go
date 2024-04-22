@@ -6,7 +6,7 @@ import (
 	"github.com/pjotrscholtze/go-markdown/cmd/go-markdown/entity"
 )
 
-func parseLineCodeblockElement(input []entity.MarkdownElement) []entity.MarkdownElement {
+func ParseLineCodeblockElement(input []entity.MarkdownElement, parserFn func(input string) []entity.MarkdownElement) []entity.MarkdownElement {
 	res := make([]entity.MarkdownElement, 0)
 
 	for _, entry := range input {
@@ -24,7 +24,7 @@ func parseLineCodeblockElement(input []entity.MarkdownElement) []entity.Markdown
 			if strings.HasPrefix(strings.TrimLeft(line, " \t"), "```") {
 				if isCodeBlock {
 					chunkOfLines = append(chunkOfLines, line)
-					res = append(res, entity.NewCodeBlockMarkdownElement(strings.Join(chunkOfLines, "\n")))
+					res = append(res, entity.NewCodeBlockMarkdownElement(strings.Join(chunkOfLines, "\n"), parserFn))
 					chunkOfLines = nil
 					isCodeBlock = false
 					continue
@@ -43,7 +43,7 @@ func parseLineCodeblockElement(input []entity.MarkdownElement) []entity.Markdown
 		}
 		if len(chunkOfLines) > 0 {
 			if isCodeBlock {
-				res = append(res, entity.NewCodeBlockMarkdownElement(strings.Join(chunkOfLines, "\n")))
+				res = append(res, entity.NewCodeBlockMarkdownElement(strings.Join(chunkOfLines, "\n"), parserFn))
 			} else {
 				res = append(res, &entity.LineElement{
 					Type:    entity.ElementKindText,

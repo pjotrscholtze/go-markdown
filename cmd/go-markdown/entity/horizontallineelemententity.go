@@ -14,7 +14,10 @@ func (bqme *horizontalLineMarkdownElement) Kind() string {
 func (bqme *horizontalLineMarkdownElement) AsMarkdownString() string {
 	return bqme.Content
 }
-func NewHorizontalLineMarkdownElement(input string) HorizontalLineMarkdownElement {
+func NewHorizontalLineMarkdownElement(input string, parserFn func(input string) []MarkdownElement) HorizontalLineMarkdownElement {
+	// parserFn is not used, since in an emoji no sub elements can exist.
+	// However, to keep the interface similiar between all entities, this
+	// parameter has been created.
 	return &horizontalLineMarkdownElement{
 		Content: input,
 	}

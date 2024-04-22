@@ -1,7 +1,7 @@
 package entity
 
 type footnoteMarkdownElement struct {
-	Content string
+	Content []MarkdownElement
 }
 type FootnoteMarkdownElement interface {
 	AsMarkdownString() string
@@ -12,10 +12,10 @@ func (ime *footnoteMarkdownElement) Kind() string {
 	return ElementKindFootnote
 }
 func (ime *footnoteMarkdownElement) AsMarkdownString() string {
-	return "[^" + ime.Content + "]"
+	return "[^" + GlueToString(ime.Content) + "]"
 }
-func NewFootnoteMarkdownElement(input string) FootnoteMarkdownElement {
+func NewFootnoteMarkdownElement(input string, parserFn func(input string) []MarkdownElement) FootnoteMarkdownElement {
 	return &footnoteMarkdownElement{
-		Content: input[2 : len(input)-1],
+		Content: parserFn(input[2 : len(input)-1]),
 	}
 }

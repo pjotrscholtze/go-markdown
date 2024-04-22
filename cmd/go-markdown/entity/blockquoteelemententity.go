@@ -1,7 +1,7 @@
 package entity
 
 type blockQuoteMarkdownElement struct {
-	Content string
+	Content []MarkdownElement
 }
 type BlockQuoteMarkdownElement interface {
 	AsMarkdownString() string
@@ -12,10 +12,10 @@ func (bqme *blockQuoteMarkdownElement) Kind() string {
 	return ElementKindBlockquote
 }
 func (bqme *blockQuoteMarkdownElement) AsMarkdownString() string {
-	return ">" + bqme.Content
+	return ">" + GlueToString(bqme.Content)
 }
-func NewBlockQuoteMarkdownElement(input string) BlockQuoteMarkdownElement {
+func NewBlockQuoteMarkdownElement(input string, parserFn func(input string) []MarkdownElement) BlockQuoteMarkdownElement {
 	return &blockQuoteMarkdownElement{
-		Content: input[1:],
+		Content: parserFn(input[1:]),
 	}
 }

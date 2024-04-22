@@ -16,7 +16,13 @@ func TestEmojiMarkdownElement(t *testing.T) {
 
 	for _, test := range tests {
 		t.Run(test.name, func(t *testing.T) {
-			got := NewEmojiMarkdownElement(test.input)
+			got := NewEmojiMarkdownElement(test.input,
+				func(input string) []MarkdownElement {
+					return []MarkdownElement{&LineElement{
+						Type:    ElementKindText,
+						Content: input,
+					}}
+				})
 			if got.AsMarkdownString() != test.expect.AsMarkdownString() {
 				t.Errorf("AsMarkdownString() not the same. Expected %v, got %v", test.expect.AsMarkdownString(), got.AsMarkdownString())
 			}

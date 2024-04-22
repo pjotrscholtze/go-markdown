@@ -320,8 +320,14 @@ After the table`, expect: []entity.MarkdownElement{
 
 	for _, test := range tests {
 		t.Run(test.name, func(t *testing.T) {
-			got := parseLineTableElement([]entity.MarkdownElement{
-				&entity.LineElement{Type: entity.ElementKindText, Content: test.input}})
+			got := ParseLineTableElement([]entity.MarkdownElement{
+				&entity.LineElement{Type: entity.ElementKindText, Content: test.input}},
+				func(input string) []entity.MarkdownElement {
+					return []entity.MarkdownElement{&entity.LineElement{
+						Type:    entity.ElementKindText,
+						Content: input,
+					}}
+				})
 			if !equalResults(got, test.expect) {
 				t.Errorf("Expected %v, got %v", test.expect, got)
 			}

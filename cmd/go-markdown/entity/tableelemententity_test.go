@@ -24,7 +24,13 @@ func TestTableEntityMarkdownElement(t *testing.T) {
 
 	for _, test := range tests {
 		t.Run(test.name, func(t *testing.T) {
-			got := NewTableElementMarkdownElement(test.input)
+			got := NewTableElementMarkdownElement(test.input,
+				func(input string) []MarkdownElement {
+					return []MarkdownElement{&LineElement{
+						Type:    ElementKindText,
+						Content: input,
+					}}
+				})
 			if got.AsMarkdownString() != test.expect.AsMarkdownString() {
 				t.Errorf("AsMarkdownString() not the same. Expected %v, got %v", test.expect.AsMarkdownString(), got.AsMarkdownString())
 			}

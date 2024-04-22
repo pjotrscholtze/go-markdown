@@ -2,7 +2,7 @@ package entity
 
 type italicMarkdownElement struct {
 	WrappingSymbol rune
-	Content        string
+	Content        []MarkdownElement
 }
 type ItalicMarkdownElement interface {
 	AsMarkdownString() string
@@ -22,14 +22,14 @@ func (ime *italicMarkdownElement) SetWrappingSymbolAsRune(symb rune) {
 }
 func (ime *italicMarkdownElement) AsMarkdownString() string {
 	wrappingSymbol := string(ime.WrappingSymbol)
-	return wrappingSymbol + ime.Content + wrappingSymbol
+	return wrappingSymbol + GlueToString(ime.Content) + wrappingSymbol
 }
-func NewItalicMarkdownElement(input string) ItalicMarkdownElement {
+func NewItalicMarkdownElement(input string, parserFn func(input string) []MarkdownElement) ItalicMarkdownElement {
 	inputAsRunes := []rune(input)
 	symbol := inputAsRunes[0]
 	content := string(inputAsRunes[1 : len(inputAsRunes)-1])
 	return &italicMarkdownElement{
 		WrappingSymbol: symbol,
-		Content:        content,
+		Content:        parserFn(content),
 	}
 }

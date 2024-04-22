@@ -8,7 +8,7 @@ import (
 	"github.com/pjotrscholtze/go-markdown/cmd/go-markdown/entity"
 )
 
-func parseLineHeaderElement(input []entity.MarkdownElement) []entity.MarkdownElement {
+func ParseLineHeaderElement(input []entity.MarkdownElement, parserFn func(input string) []entity.MarkdownElement) []entity.MarkdownElement {
 	res := make([]entity.MarkdownElement, 0)
 
 	for _, entry := range input {
@@ -37,7 +37,8 @@ func parseLineHeaderElement(input []entity.MarkdownElement) []entity.MarkdownEle
 					})
 					preLines = nil
 				}
-				res = append(res, entity.NewHeaderMarkdownElement(line))
+				// @todo This needs to be implemented for every element!
+				res = append(res, entity.NewHeaderMarkdownElement(line, parserFn))
 
 			} else {
 				preLines = append(preLines, line)

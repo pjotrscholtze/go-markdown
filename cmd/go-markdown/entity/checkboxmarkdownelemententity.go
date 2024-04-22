@@ -4,7 +4,7 @@ import "strings"
 
 type checkboxMarkdownElement struct {
 	CheckContent string
-	Content      string
+	Content      []MarkdownElement
 }
 type CheckboxMarkdownElement interface {
 	AsMarkdownString() string
@@ -15,9 +15,9 @@ func (ime *checkboxMarkdownElement) Kind() string {
 	return ElementKindCheckbox
 }
 func (ime *checkboxMarkdownElement) AsMarkdownString() string {
-	return "[" + ime.CheckContent + "]" + ime.Content
+	return "[" + ime.CheckContent + "]" + GlueToString(ime.Content)
 }
-func NewCheckboxMarkdownElement(input string) CheckboxMarkdownElement {
+func NewCheckboxMarkdownElement(input string, parserFn func(input string) []MarkdownElement) CheckboxMarkdownElement {
 	checkContent := ""
 	content := input[2:]
 	if idx := strings.Index(input, "]"); idx != -1 {
@@ -26,6 +26,6 @@ func NewCheckboxMarkdownElement(input string) CheckboxMarkdownElement {
 	}
 	return &checkboxMarkdownElement{
 		CheckContent: checkContent,
-		Content:      content,
+		Content:      parserFn(content),
 	}
 }
