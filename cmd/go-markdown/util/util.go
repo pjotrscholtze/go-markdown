@@ -20,15 +20,15 @@ func FindPatternsAndNonPatterns(regex, input, matchType, nonMatchType string) []
 	for _, match := range matches {
 		line := input[before:match[1]]
 		before = match[1]
-		results = append(results, findPatternsAndNonPatterns(regex, line, matchType, nonMatchType)...)
+		results = append(results, FindPatternsAndNonPatternsSingleLine(regex, line, matchType, nonMatchType)...)
 	}
 	line := input[before:]
-	results = append(results, findPatternsAndNonPatterns(regex, line, matchType, nonMatchType)...)
+	results = append(results, FindPatternsAndNonPatternsSingleLine(regex, line, matchType, nonMatchType)...)
 
 	return results //findPatternsAndNonPatterns(regex, input, matchType, nonMatchType)
 }
 
-func findPatternsAndNonPatterns(regex, input, matchType, nonMatchType string) []Result {
+func FindPatternsAndNonPatternsSingleLine(regex, input, matchType, nonMatchType string) []Result {
 	results := make([]Result, 0)
 	if len(input) == 0 {
 		return results
