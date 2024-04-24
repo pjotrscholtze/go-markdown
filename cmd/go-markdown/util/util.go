@@ -60,3 +60,20 @@ func FindPatternsAndNonPatternsSingleLine(regex, input, matchType, nonMatchType 
 
 	return results
 }
+
+func SplitOnNewLine(input string) []string {
+	if len(input) == 0 {
+		return []string{}
+	}
+	r := regexp.MustCompile("\r?\n")
+	matches := r.FindAllStringSubmatchIndex(input, -1)
+
+	before := 0
+	out := []string{}
+	for _, match := range matches {
+		out = append(out, input[before:match[1]])
+		before = match[1]
+	}
+	out = append(out, input[before:])
+	return out
+}
