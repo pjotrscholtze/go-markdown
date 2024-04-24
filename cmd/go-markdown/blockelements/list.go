@@ -1,3 +1,4 @@
+// list.go
 package blockelements
 
 import (
@@ -39,7 +40,7 @@ func ParseLineListElement(input []entity.MarkdownElement, parserFn func(input st
 						Content: strings.Join(preLines, "\n"),
 					})
 				}
-				res = append(res, entity.NewListElementMarkdownElement(strings.Join(list, "\n"), parserFn, ParseLineListElement))
+				res = append(res, entity.NewListElementMarkdownElement(strings.Join(list, "\n"), parserFn))
 				preLines = []string{line}
 				list = nil
 			} else {
@@ -54,7 +55,7 @@ func ParseLineListElement(input []entity.MarkdownElement, parserFn func(input st
 				})
 				preLines = []string{}
 			}
-			res = append(res, entity.NewListElementMarkdownElement(strings.Join(list, "\n"), parserFn, ParseLineListElement))
+			res = append(res, entity.NewListElementMarkdownElement(strings.Join(list, "\n"), parserFn))
 		}
 		if len(preLines) > 0 {
 			res = append(res, &entity.LineElement{
