@@ -17,7 +17,8 @@ const (
 	ElementKindHeader             = "header"
 	ElementKindBlockquote         = "blockquote"
 	ElementKindTable              = "table"
-	ElementKindList               = "list"
+	ElementKindList               = "list"     // @todo not shure if this still needs to exist...
+	ElementKindListItem           = "listItem" // @todo not shure if this still needs to exist...
 	ElementKindCodeblock          = "codeblock"
 	ElementKindHorizontalLine     = "horizontalLine"
 	ElementKindTermDefinitionLine = "termDefinitionLine"
