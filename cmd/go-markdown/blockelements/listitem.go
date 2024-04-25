@@ -18,10 +18,7 @@ func ParseLineListItemElement(input string, parserFn func(input string) []entity
 		if match {
 			if len(prelines) > 0 {
 				if lineItemFound {
-					res = append(res, &entity.LineElement{
-						Type:    entity.ElementKindListItem,
-						Content: strings.Join(prelines, ""),
-					})
+					res = append(res, entity.NewListItemElementMarkdownElement(strings.Join(prelines, ""), parserFn))
 				} else {
 					res = append(res, &entity.LineElement{
 						Type:    entity.ElementKindText,
@@ -41,10 +38,7 @@ func ParseLineListItemElement(input string, parserFn func(input string) []entity
 				prelines = append(prelines, line)
 			} else {
 				// End found
-				res = append(res, &entity.LineElement{
-					Type:    entity.ElementKindListItem,
-					Content: strings.Join(prelines, ""),
-				})
+				res = append(res, entity.NewListItemElementMarkdownElement(strings.Join(prelines, ""), parserFn))
 				prelines = []string{line}
 				lineItemFound = false
 			}
@@ -55,10 +49,7 @@ func ParseLineListItemElement(input string, parserFn func(input string) []entity
 	}
 	if len(prelines) > 0 {
 		if lineItemFound {
-			res = append(res, &entity.LineElement{
-				Type:    entity.ElementKindListItem,
-				Content: strings.Join(prelines, ""),
-			})
+			res = append(res, entity.NewListItemElementMarkdownElement(strings.Join(prelines, ""), parserFn))
 		} else {
 			res = append(res, &entity.LineElement{
 				Type:    entity.ElementKindText,
