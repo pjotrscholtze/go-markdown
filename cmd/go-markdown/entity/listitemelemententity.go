@@ -1,6 +1,7 @@
 package entity
 
 import (
+	"regexp"
 	"strings"
 
 	"github.com/pjotrscholtze/go-markdown/cmd/go-markdown/util"
@@ -13,6 +14,27 @@ type listItemElementMarkdownElement struct {
 type ListItemElementMarkdownElement interface {
 	AsMarkdownString() string
 	Kind() string
+	GetSymbol() string
+	GetContentAsString() string
+	GetContentAsStringMultiLine() string
+	SymbolLength() int
+	AddContent(content []MarkdownElement)
+}
+
+func (bqme *listItemElementMarkdownElement) AddContent(content []MarkdownElement) {
+	bqme.Content = append(bqme.Content, content...)
+}
+
+func (bqme *listItemElementMarkdownElement) SymbolLength() int {
+	return len(bqme.Symbol)
+}
+
+func (bqme *listItemElementMarkdownElement) GetContentAsStringMultiLine() string {
+	out := ""
+	for _, line := range util.SplitOnNewLine(GlueToString(bqme.Content)) {
+		out += line[min(len(line), bqme.SymbolLength()):]
+	}
+	return out
 }
 
 func (bqme *listItemElementMarkdownElement) GetSymbol() string {
@@ -26,23 +48,19 @@ func (bqme *listItemElementMarkdownElement) Kind() string {
 }
 func (bqme *listItemElementMarkdownElement) AsMarkdownString() string {
 	content := GlueToString(bqme.Content)
-	out := []string{}
-	for i, line := range util.SplitOnNewLine(content) {
-		if i == 0 {
-			out = append(out, bqme.Symbol+line)
-			continue
-		}
-		out = append(out, line)
-	}
-	return strings.Join(out, "")
+	return bqme.Symbol + content
 }
 func NewListItemElementMarkdownElement(input string, parserFn func(input string) []MarkdownElement) MarkdownElement {
-	idx := 0
 	symbol := ""
+	findSymbol := regexp.MustCompile(`^\s*(([\-+\*]|(\d+\.)))+ `)
 	lines := []string{}
 	for i, line := range util.SplitOnNewLine(input) {
 		if i == 0 {
-			idx = strings.Index(line, " ")
+			matches := findSymbol.FindAllStringSubmatchIndex(line, -1)
+			idx := 0
+			if len(matches) > 0 {
+				idx = min(len(line), matches[0][1])
+			}
 			symbol = line[:idx]
 			lines = append(lines, line[idx:])
 			continue
