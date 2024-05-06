@@ -4,7 +4,7 @@ import (
 	"github.com/pjotrscholtze/go-markdown/cmd/go-markdown/entity"
 )
 
-func ParseListContainerDefinition(input []entity.MarkdownElement, parserFn func(input string) []entity.MarkdownElement) []entity.MarkdownElement {
+func ParseListContainerElement(input []entity.MarkdownElement, parserFn func(input string) []entity.MarkdownElement) []entity.MarkdownElement {
 	res := make([]entity.MarkdownElement, 0)
 	listContainer := entity.NewListElementMarkdownElement()
 	for _, inputEntry := range input {

@@ -1,33 +1,35 @@
 package parser
 
 import (
+	"github.com/pjotrscholtze/go-markdown/cmd/go-markdown/blockelements"
 	"github.com/pjotrscholtze/go-markdown/cmd/go-markdown/entity"
+	"github.com/pjotrscholtze/go-markdown/cmd/go-markdown/spanelements"
 )
 
-// var DefaultMarkdownOrder = []func(input []entity.MarkdownElement, parser func(input []entity.MarkdownElement) []entity.MarkdownElement) []entity.MarkdownElement{
-// 	blockelements.ParseLineHeaderElement,
-// 	blockelements.ParseLineTableElement,
-// 	blockelements.ParseLineHorizontalLineElement,
-// 	blockelements.ParseLineCodeblockElement,
-// 	blockelements.ParseLineBlockquoteElement,
-// 	blockelements.ParseLineListElement,
-// 	blockelements.ParseLineTermDefinitionLineElement,
+var DefaultMarkdownOrder = []func(input []entity.MarkdownElement, parserFn func(input string) []entity.MarkdownElement) []entity.MarkdownElement{
+	blockelements.ParseLineHeaderElement,
+	blockelements.ParseLineTableElement,
+	blockelements.ParseLineHorizontalLineElement,
+	blockelements.ParseLineCodeblockElement,
+	blockelements.ParseLineBlockquoteElement,
+	blockelements.ParseListContainerElement,
+	blockelements.ParseLineTermDefinitionLineElement,
 
-// 	spanelements.ParseInlineCodeElement,
-// 	spanelements.ParseLineLinkElement,
-// 	spanelements.ParseLineImageElement,
+	spanelements.ParseInlineCodeElement,
+	spanelements.ParseLineLinkElement,
+	spanelements.ParseLineImageElement,
 
-// 	spanelements.ParseLineCheckboxElement,
+	spanelements.ParseLineCheckboxElement,
 
-// 	spanelements.ParseLineBoldElement,
-// 	spanelements.ParseLineBoldAltElement,
-// 	spanelements.ParseLineEmojiElement,
-// 	spanelements.ParseLineFootnoteElement,
-// 	spanelements.ParseLineHighlightElement,
-// 	spanelements.ParseLineItalicElement,
-// 	spanelements.ParseLineItalicAltElement,
-// 	spanelements.ParseLineStrikethroughElement,
-// }
+	spanelements.ParseLineBoldElement,
+	spanelements.ParseLineBoldAltElement,
+	spanelements.ParseLineEmojiElement,
+	spanelements.ParseLineFootnoteElement,
+	spanelements.ParseLineHighlightElement,
+	spanelements.ParseLineItalicElement,
+	spanelements.ParseLineItalicAltElement,
+	spanelements.ParseLineStrikethroughElement,
+}
 
 func ParseString(
 	inpt string,

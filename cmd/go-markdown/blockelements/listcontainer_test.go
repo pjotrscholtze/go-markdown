@@ -101,7 +101,7 @@ This is a paragraph after the list.
 	}
 	for _, test := range tests {
 		t.Run(test.name, func(t *testing.T) {
-			got := ParseListContainerDefinition([]entity.MarkdownElement{
+			got := ParseListContainerElement([]entity.MarkdownElement{
 				&entity.LineElement{Type: entity.ElementKindText, Content: test.input}},
 				func(input string) []entity.MarkdownElement {
 					return []entity.MarkdownElement{&entity.LineElement{
