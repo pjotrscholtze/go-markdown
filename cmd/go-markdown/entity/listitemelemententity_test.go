@@ -9,6 +9,8 @@ func TestListItemEntityMarkdownElement(t *testing.T) {
 	emptyList := RawTextMarkdownElement("- ")
 	emptyList2 := RawTextMarkdownElement("+ ")
 	helloWorld := RawTextMarkdownElement("+ Hello world")
+	helloWorldSpaces := RawTextMarkdownElement("  + Hello world")
+	helloWorldTabs := RawTextMarkdownElement("\t\t+ Hello world")
 	helloWorld1 := RawTextMarkdownElement("1. Hello world")
 	helloWorld12 := RawTextMarkdownElement("1.2. Hello world")
 	multiline := RawTextMarkdownElement("- Hello world\n  more content here")
@@ -19,6 +21,8 @@ func TestListItemEntityMarkdownElement(t *testing.T) {
 		input  string
 		expect listItemElementMarkdownElement
 	}{
+		{name: "Spaces infront of content", input: "  + Hello world", expect: listItemElementMarkdownElement{Content: []MarkdownElement{&helloWorldSpaces}}},
+		{name: "Tabs infront of content", input: "\t\t+ Hello world", expect: listItemElementMarkdownElement{Content: []MarkdownElement{&helloWorldTabs}}},
 		{name: "No content", input: "- ", expect: listItemElementMarkdownElement{Content: []MarkdownElement{&emptyList}}},
 		{name: "No content different symbol", input: "+ ", expect: listItemElementMarkdownElement{Content: []MarkdownElement{&emptyList2}}},
 		{name: "Content", input: "+ Hello world", expect: listItemElementMarkdownElement{Content: []MarkdownElement{&helloWorld}}},

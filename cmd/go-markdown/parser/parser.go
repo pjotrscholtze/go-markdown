@@ -12,6 +12,7 @@ var DefaultMarkdownOrder = []func(input []entity.MarkdownElement, parserFn func(
 	blockelements.ParseLineHorizontalLineElement,
 	blockelements.ParseLineCodeblockElement,
 	blockelements.ParseLineBlockquoteElement,
+	blockelements.ParseListContainerNestedElement,
 	blockelements.ParseListContainerElement,
 	blockelements.ParseLineTermDefinitionLineElement,
 

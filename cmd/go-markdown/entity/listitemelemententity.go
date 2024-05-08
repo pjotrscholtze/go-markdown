@@ -19,6 +19,18 @@ type ListItemElementMarkdownElement interface {
 	GetContentAsStringMultiLine() string
 	SymbolLength() int
 	AddContent(content []MarkdownElement)
+	GetWhitespaceInFront() string
+}
+
+func (bqme *listItemElementMarkdownElement) GetWhitespaceInFront() string {
+	findWhitespace := regexp.MustCompile(`^\s+`)
+	matches := findWhitespace.FindAllStringSubmatchIndex(bqme.Symbol, -1)
+	res := ""
+	if len(matches) > 0 {
+		res = bqme.Symbol[:matches[0][1]]
+	}
+
+	return res
 }
 
 func (bqme *listItemElementMarkdownElement) AddContent(content []MarkdownElement) {
