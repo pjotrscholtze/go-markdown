@@ -1,7 +1,8 @@
 # Supported Markdown elements
 This document serves as an overview of the various Markdown elements that are
 supported within the parser. Each section below delves into the syntax, usage,
-and examples for a wide range of Markdown features.
+and examples for a wide range of Markdown features. Not all Markdown elements
+are supported by Github, so some will not render properly on Github.
 
 ## Blockquote element
 The blockquote element allows you to highlight a section of text as a quotation.
