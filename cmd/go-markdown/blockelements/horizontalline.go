@@ -12,15 +12,29 @@ func ParseLineHorizontalLineElement(input []entity.MarkdownElement, parserFn fun
 			res = append(res, entry)
 			continue
 		}
+
+		var tmp *entity.LineElement
 		for _, entry := range util.FindPatternsAndNonPatterns(`((\*( )?)|(\-( )?)|(_( )?)){3,}`, entry.AsMarkdownString(), entity.ElementKindHorizontalLine, entity.ElementKindText) {
 			if entry.Type == entity.ElementKindHorizontalLine {
+				if tmp != nil {
+					res = append(res, tmp)
+					tmp = nil
+				}
+
 				res = append(res, entity.NewHorizontalLineMarkdownElement(entry.Content, parserFn))
 			} else {
-				res = append(res, &entity.LineElement{
-					Type:    entry.Type,
-					Content: entry.Content,
-				})
+				if tmp == nil {
+					tmp = &entity.LineElement{
+						Type:    entry.Type,
+						Content: "",
+					}
+				}
+
+				tmp.Content += entry.Content
 			}
+		}
+		if tmp != nil {
+			res = append(res, tmp)
 		}
 	}
 	return res
