@@ -6,6 +6,11 @@ type inlineCodeMarkdownElement struct {
 type InlineCodeMarkdownElement interface {
 	AsMarkdownString() string
 	Kind() string
+	GetContent() string
+}
+
+func (bqme *inlineCodeMarkdownElement) GetContent() string {
+	return bqme.Content
 }
 
 func (icme *inlineCodeMarkdownElement) Kind() string {

@@ -12,6 +12,9 @@ type tableElementMarkdownElement struct {
 type TableElementMarkdownElement interface {
 	AsMarkdownString() string
 	Kind() string
+	Header() *TableRow
+	AddRow(row TableRow)
+	Rows() []TableRow
 }
 type TableRow struct {
 	Cells []string
