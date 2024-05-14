@@ -14,7 +14,13 @@ func ParseInlineCodeElement(input []entity.MarkdownElement, parserFn func(input 
 		}
 		for _, entry := range util.FindPatternsAndNonPatterns("`[^`]*`", entry.AsMarkdownString(), entity.ElementKindInlineCode, entity.ElementKindText) {
 			if entry.Type == entity.ElementKindInlineCode {
-				res = append(res, entity.NewInlineCodeMarkdownElement(entry.Content, parserFn))
+				res = append(res, entity.NewInlineCodeMarkdownElement(entry.Content,
+					func(input string) []entity.MarkdownElement {
+						return []entity.MarkdownElement{&entity.LineElement{
+							Type:    entity.ElementKindText,
+							Content: input,
+						}}
+					}))
 			} else {
 				res = append(res, &entity.LineElement{
 					Type:    entry.Type,

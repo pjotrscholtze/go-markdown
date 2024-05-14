@@ -1,11 +1,27 @@
 package entity
 
+import (
+	"strings"
+
+	"github.com/pjotrscholtze/go-markdown/cmd/go-markdown/util"
+)
+
 type codeBlockMarkdownElement struct {
 	Content string
 }
 type CodeBlockMarkdownElement interface {
+	WithoutFirstLine() string
+	FirstLine() string
 	AsMarkdownString() string
 	Kind() string
+}
+
+func (bqme *codeBlockMarkdownElement) WithoutFirstLine() string {
+	return strings.Join(util.SplitOnNewLine(bqme.Content)[1:], "")
+}
+
+func (bqme *codeBlockMarkdownElement) FirstLine() string {
+	return util.SplitOnNewLine(bqme.Content)[0]
 }
 
 func (bqme *codeBlockMarkdownElement) Kind() string {
