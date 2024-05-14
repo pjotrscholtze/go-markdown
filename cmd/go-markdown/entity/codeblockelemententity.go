@@ -14,6 +14,9 @@ func (bqme *codeBlockMarkdownElement) Kind() string {
 func (bqme *codeBlockMarkdownElement) AsMarkdownString() string {
 	return "```" + bqme.Content + "```"
 }
+func (bqme *codeBlockMarkdownElement) GetContent() string {
+	return bqme.Content
+}
 func NewCodeBlockMarkdownElement(input string, parserFn func(input string) []MarkdownElement) CodeBlockMarkdownElement {
 	// parserFn is not used, since in an code box no sub elements can exist.
 	// However, to keep the interface similiar between all entities, this

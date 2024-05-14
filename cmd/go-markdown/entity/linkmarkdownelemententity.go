@@ -19,6 +19,9 @@ type LinkMarkdownElement interface {
 	SetUrl(url string)
 }
 
+func (icme *linkMarkdownElement) GetContents() []MarkdownElement {
+	return icme.Content
+}
 func (icme *linkMarkdownElement) GetContent() string {
 	return GlueToString(icme.Content)
 }

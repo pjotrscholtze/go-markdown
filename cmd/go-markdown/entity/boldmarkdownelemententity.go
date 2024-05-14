@@ -24,6 +24,9 @@ func (bme *boldMarkdownElement) AsMarkdownString() string {
 	wrappingSymbol := string(bme.WrappingSymbol) + string(bme.WrappingSymbol)
 	return wrappingSymbol + GlueToString(bme.Content) + wrappingSymbol
 }
+func (bme *boldMarkdownElement) GetContent() []MarkdownElement {
+	return bme.Content
+}
 func NewBoldMarkdownElement(input string, parserFn func(input string) []MarkdownElement) BoldMarkdownElement {
 	inputAsRunes := []rune(input)
 	symbol := inputAsRunes[0]

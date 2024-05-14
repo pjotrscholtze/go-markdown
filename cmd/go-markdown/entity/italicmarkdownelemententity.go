@@ -24,6 +24,9 @@ func (ime *italicMarkdownElement) AsMarkdownString() string {
 	wrappingSymbol := string(ime.WrappingSymbol)
 	return wrappingSymbol + GlueToString(ime.Content) + wrappingSymbol
 }
+func (bme *italicMarkdownElement) GetContent() []MarkdownElement {
+	return bme.Content
+}
 func NewItalicMarkdownElement(input string, parserFn func(input string) []MarkdownElement) ItalicMarkdownElement {
 	inputAsRunes := []rune(input)
 	symbol := inputAsRunes[0]
