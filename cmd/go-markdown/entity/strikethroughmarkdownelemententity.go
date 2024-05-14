@@ -6,6 +6,7 @@ type strikethroughMarkdownElement struct {
 type StrikethroughMarkdownElement interface {
 	AsMarkdownString() string
 	Kind() string
+	GetContent() []MarkdownElement
 }
 
 func (ime *strikethroughMarkdownElement) Kind() string {

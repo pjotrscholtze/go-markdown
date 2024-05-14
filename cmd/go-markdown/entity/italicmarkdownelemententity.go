@@ -6,6 +6,7 @@ type italicMarkdownElement struct {
 }
 type ItalicMarkdownElement interface {
 	AsMarkdownString() string
+	GetContent() []MarkdownElement
 	Kind() string
 	GetWrappingSymbolAsRune() rune
 	SetWrappingSymbolAsRune(symb rune)

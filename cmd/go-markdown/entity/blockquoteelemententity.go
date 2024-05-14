@@ -6,6 +6,7 @@ type blockQuoteMarkdownElement struct {
 type BlockQuoteMarkdownElement interface {
 	AsMarkdownString() string
 	Kind() string
+	GetContent() []MarkdownElement
 }
 
 func (bqme *blockQuoteMarkdownElement) Kind() string {

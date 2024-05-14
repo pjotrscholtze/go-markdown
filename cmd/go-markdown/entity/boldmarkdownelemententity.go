@@ -9,6 +9,7 @@ type BoldMarkdownElement interface {
 	Kind() string
 	GetWrappingSymbolAsRune() rune
 	SetWrappingSymbolAsRune(symb rune)
+	GetContent() []MarkdownElement
 }
 
 func (bme *boldMarkdownElement) Kind() string {

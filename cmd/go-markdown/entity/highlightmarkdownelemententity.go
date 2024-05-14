@@ -6,6 +6,11 @@ type highlightMarkdownElement struct {
 type HighlightMarkdownElement interface {
 	AsMarkdownString() string
 	Kind() string
+	GetContent() []MarkdownElement
+}
+
+func (bme *highlightMarkdownElement) GetContent() []MarkdownElement {
+	return bme.Content
 }
 
 func (icme *highlightMarkdownElement) Kind() string {

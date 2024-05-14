@@ -11,6 +11,7 @@ type LinkMarkdownElement interface {
 	AsMarkdownString() string
 	Kind() string
 
+	GetContents() []MarkdownElement
 	GetContent() string
 	GetUrl() string
 	GetTitle() *string
