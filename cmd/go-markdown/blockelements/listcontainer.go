@@ -8,6 +8,10 @@ func ParseListContainerElement(input []entity.MarkdownElement, parserFn func(inp
 	res := make([]entity.MarkdownElement, 0)
 	listContainer := entity.NewListElementMarkdownElement()
 	for _, inputEntry := range input {
+		if inputEntry.Kind() != entity.ElementKindListItem {
+			res = append(res, inputEntry)
+			continue
+		}
 		for _, entry := range ParseLineListItemElement(inputEntry.AsMarkdownString(), parserFn) {
 			if entry.Kind() != entity.ElementKindListItem {
 				if listContainer.ItemCount() > 0 {
