@@ -336,7 +336,9 @@ func TestParseLineBoldElementColon(t *testing.T) {
 func TestParseLineBoldElementColon2(t *testing.T) {
 	input := "Hello__ smile, blah__ testing "
 	expectedOutput := []entity.MarkdownElement{
-		&entity.LineElement{Type: entity.ElementKindText, Content: "Hello__ smile, blah__ testing "},
+		&entity.LineElement{Type: entity.ElementKindText, Content: "Hello"},
+		&entity.LineElement{Type: entity.ElementKindBold, Content: "__ smile, blah__"},
+		&entity.LineElement{Type: entity.ElementKindText, Content: " testing "},
 	}
 	result := ParseLineBoldElement([]entity.MarkdownElement{
 		&entity.LineElement{Type: entity.ElementKindText, Content: input}},

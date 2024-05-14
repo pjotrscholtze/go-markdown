@@ -12,7 +12,7 @@ func ParseLineItalicElement(input []entity.MarkdownElement, parserFn func(input 
 			res = append(res, entry)
 			continue
 		}
-		for _, entry := range util.FindPatternsAndNonPatterns(`\*[A-Za-z0-9]+\*`, entry.AsMarkdownString(), entity.ElementKindItalic, entity.ElementKindText) {
+		for _, entry := range util.FindPatternsAndNonPatterns(`\*[^\*]+\*`, entry.AsMarkdownString(), entity.ElementKindItalic, entity.ElementKindText) {
 			if entry.Type == entity.ElementKindItalic {
 				res = append(res, entity.NewItalicMarkdownElement(entry.Content, parserFn))
 			} else {

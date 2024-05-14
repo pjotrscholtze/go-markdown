@@ -320,7 +320,9 @@ func TestParseLineItalicElementColon(t *testing.T) {
 func TestParseLineItalicElementColon2(t *testing.T) {
 	input := "Hello* smile, blah* testing "
 	expectedOutput := []entity.MarkdownElement{
-		&entity.LineElement{Type: entity.ElementKindText, Content: "Hello* smile, blah* testing "},
+		&entity.LineElement{Type: entity.ElementKindText, Content: "Hello"},
+		&entity.LineElement{Type: entity.ElementKindItalic, Content: "* smile, blah*"},
+		&entity.LineElement{Type: entity.ElementKindText, Content: " testing "},
 	}
 	result := ParseLineItalicElement([]entity.MarkdownElement{
 		&entity.LineElement{Type: entity.ElementKindText, Content: input}},

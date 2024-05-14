@@ -12,7 +12,7 @@ func ParseLineBoldElement(input []entity.MarkdownElement, parserFn func(input st
 			res = append(res, entry)
 			continue
 		}
-		for _, entry := range util.FindPatternsAndNonPatterns(`__[A-Za-z0-9]+__`, entry.AsMarkdownString(), entity.ElementKindBold, entity.ElementKindText) {
+		for _, entry := range util.FindPatternsAndNonPatterns(`__[^_]+__`, entry.AsMarkdownString(), entity.ElementKindBold, entity.ElementKindText) {
 			if entry.Type == entity.ElementKindBold {
 				res = append(res, entity.NewBoldMarkdownElement(entry.Content, parserFn))
 			} else {
