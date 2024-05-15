@@ -7,9 +7,14 @@ type checkboxMarkdownElement struct {
 	Content      []MarkdownElement
 }
 type CheckboxMarkdownElement interface {
+	GetCheckContent() string
 	AsMarkdownString() string
 	GetContent() []MarkdownElement
 	Kind() string
+}
+
+func (ime *checkboxMarkdownElement) GetCheckContent() string {
+	return ime.CheckContent
 }
 
 func (ime *checkboxMarkdownElement) GetContent() []MarkdownElement {
