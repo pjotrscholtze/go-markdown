@@ -14,7 +14,7 @@ func ParseLineListItemElement(input string, parserFn func(input string) []entity
 	prelines := []string{}
 	lineItemFound := false
 	for _, line := range util.SplitOnNewLine(input) {
-		match, _ := regexp.MatchString(`^\s*(([\-+\*]|(\d+\.)).*)+\s`, line)
+		match, _ := regexp.MatchString(`^\s*(([\-+\*]|(\d+\.)).*)+(\t| )`, line)
 		if match {
 			if len(prelines) > 0 {
 				if lineItemFound {
