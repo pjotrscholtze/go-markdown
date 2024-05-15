@@ -8,7 +8,7 @@ func ParseListContainerElement(input []entity.MarkdownElement, parserFn func(inp
 	res := make([]entity.MarkdownElement, 0)
 	listContainer := entity.NewListElementMarkdownElement()
 	for _, inputEntry := range input {
-		if inputEntry.Kind() != entity.ElementKindListItem {
+		if inputEntry.Kind() != entity.ElementKindText {
 			res = append(res, inputEntry)
 			continue
 		}
