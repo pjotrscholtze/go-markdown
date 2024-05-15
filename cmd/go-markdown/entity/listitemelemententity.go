@@ -16,10 +16,15 @@ type ListItemElementMarkdownElement interface {
 	Kind() string
 	GetSymbol() string
 	GetContentAsString() string
+	GetContentMarkdownElements() []MarkdownElement
 	GetContentAsStringMultiLine() string
 	SymbolLength() int
 	AddContent(content []MarkdownElement)
 	GetWhitespaceInFront() string
+}
+
+func (bqme *listItemElementMarkdownElement) GetContentMarkdownElements() []MarkdownElement {
+	return bqme.Content
 }
 
 func (bqme *listItemElementMarkdownElement) GetWhitespaceInFront() string {
