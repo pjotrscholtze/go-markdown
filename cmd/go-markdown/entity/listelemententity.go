@@ -6,6 +6,12 @@ type ListTuple struct {
 	List     ListElementMarkdownElement
 }
 
+func (lt *ListTuple) GetAsMarkdownElement() MarkdownElement {
+	if lt.List != nil {
+		return lt.List
+	}
+	return lt.ListItem
+}
 func (lt *ListTuple) GetWhitespaceInFront() string {
 	if lt.List != nil {
 		return lt.List.GetWhitespaceInFront()
@@ -25,8 +31,17 @@ type ListElementMarkdownElement interface {
 	GetSymbol() *string
 	ItemCount() int
 	GetContent() []ListTuple
+	GetContentMarkdownElements() []MarkdownElement
 	SymbolLength() int
 	GetWhitespaceInFront() string
+}
+
+func (bqme *listElementMarkdownElement) GetContentMarkdownElements() []MarkdownElement {
+	out := []MarkdownElement{}
+	for _, e := range bqme.Content {
+		out = append(out, e.GetAsMarkdownElement())
+	}
+	return out
 }
 
 func (bqme *listElementMarkdownElement) GetWhitespaceInFront() string {
