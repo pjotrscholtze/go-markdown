@@ -4,8 +4,13 @@ type footnoteMarkdownElement struct {
 	Content []MarkdownElement
 }
 type FootnoteMarkdownElement interface {
+	GetContent() []MarkdownElement
 	AsMarkdownString() string
 	Kind() string
+}
+
+func (ime *footnoteMarkdownElement) GetContent() []MarkdownElement {
+	return ime.Content
 }
 
 func (ime *footnoteMarkdownElement) Kind() string {
