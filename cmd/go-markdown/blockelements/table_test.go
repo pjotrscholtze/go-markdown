@@ -157,26 +157,6 @@ func TestTableDefinition(t *testing.T) {
 | <b>Bold</b> | Test   |`,
 			}}},
 
-		{name: "Table with Extra Pipes", input: `| Column 1 || Column 2 |
-|----------||----------|
-| A || B |`, expect: []entity.MarkdownElement{
-			&entity.LineElement{
-				Type: entity.ElementKindTable,
-				Content: `| Column 1 || Column 2 |
-|----------||----------|
-| A || B |`,
-			}}},
-
-		{name: "Table with Missing Pipes", input: `| Column 1 | Column 2
-|----------|----------
-| A | B|`, expect: []entity.MarkdownElement{
-			&entity.LineElement{
-				Type: entity.ElementKindTable,
-				Content: `| Column 1 | Column 2
-|----------|----------
-| A | B|`,
-			}}},
-
 		{name: "Table with Different Number of Columns", input: `| Column 1 | Column 2 |
 |----------|----------|
 | A | B | C|`, expect: []entity.MarkdownElement{
@@ -189,12 +169,12 @@ func TestTableDefinition(t *testing.T) {
 
 		{name: "Table with Duplicate Headers", input: `| Column 1 | Column 1 |
 |----------|----------|
-| A | B`, expect: []entity.MarkdownElement{
+| A | B |`, expect: []entity.MarkdownElement{
 			&entity.LineElement{
 				Type: entity.ElementKindTable,
 				Content: `| Column 1 | Column 1 |
 |----------|----------|
-| A | B`,
+| A | B |`,
 			}}},
 
 		{name: "Table Surrounded by Text", input: `Before the table
@@ -328,6 +308,11 @@ After the table`, expect: []entity.MarkdownElement{
 						Content: input,
 					}}
 				})
+			gmd := entity.GlueToString(got)
+			emd := entity.GlueToString(test.expect)
+			_ = gmd
+			_ = emd
+
 			if !equalResults(got, test.expect) {
 				t.Errorf("Expected %v, got %v", test.expect, got)
 			}

@@ -19,7 +19,8 @@ type TableElementMarkdownElement interface {
 	Rows() []TableRow
 }
 type TableRow struct {
-	Cells []MarkdownElement
+	Cells   []MarkdownElement
+	NewLine string
 }
 
 func (tr *TableRow) AddCell(cell MarkdownElement) {
@@ -31,16 +32,20 @@ func (tr *TableRow) AsMarkdownString() string {
 	for _, cell := range tr.Cells {
 		items = append(items, cell.AsMarkdownString())
 	}
-	return strings.Join(items, "|")
+	return "|" + strings.Join(items, "|") + "|" + tr.NewLine
 }
 
 func parseTableRow(input string, parserFn func(input string) []MarkdownElement) TableRow {
 	cells := []MarkdownElement{}
 	for _, cell := range strings.Split(input, "|") {
+		if cell == "" || cell == util.GetNewLine(cell) {
+			continue
+		}
 		cells = append(cells, &GroupElement{Contents: parserFn(cell)})
 	}
 	return TableRow{
-		Cells: cells,
+		Cells:   cells,
+		NewLine: util.GetNewLine(input),
 	}
 }
 

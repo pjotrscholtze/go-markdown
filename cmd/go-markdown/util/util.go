@@ -77,3 +77,23 @@ func SplitOnNewLine(input string) []string {
 	out = append(out, input[before:])
 	return out
 }
+func GetNewLine(input string) string {
+	if len(input) == 0 {
+		return ""
+	}
+	r := regexp.MustCompile("\r?\n")
+	matches := r.FindAllStringSubmatchIndex(input, -1)
+	if len(matches) == 0 {
+		return ""
+	}
+	match := matches[0]
+
+	// before := 0
+	// out := []string{}
+	// for _, match := range matches {
+	// 	out = append(out, input[before:match[1]])
+	// 	before = match[1]
+	// }
+	// out = append(out, input[before:])
+	return input[match[0]:match[1]]
+}

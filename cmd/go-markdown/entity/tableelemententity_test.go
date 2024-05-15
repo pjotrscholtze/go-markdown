@@ -18,33 +18,37 @@ func TestTableEntityMarkdownElement(t *testing.T) {
 |-|-|
 | | |`, expect: tableElementMarkdownElement{
 			header: TableRow{
-				Cells: []MarkdownElement{str(""), str(" "), str(" "), str("\n")},
+				NewLine: "\n",
+				Cells:   []MarkdownElement{str(" "), str(" ")},
 			},
-			sep: TableRow{Cells: []MarkdownElement{
-				str(""),
-				str("-"),
-				str("-"),
-				str("\n"),
-			}},
+			sep: TableRow{
+				NewLine: "\n",
+				Cells: []MarkdownElement{
+					str("-"),
+					str("-"),
+				}},
 			rows: []TableRow{
 				{
-					Cells: []MarkdownElement{str(""), str(" "), str(" "), str("")},
+					NewLine: "",
+					Cells:   []MarkdownElement{str(" "), str(" ")},
 				}}}},
 		{name: "Content", input: `| Column 1 | Column 2 |
 |----------|----------|
 | A | B |`, expect: tableElementMarkdownElement{
 			header: TableRow{
-				Cells: []MarkdownElement{str(""), str(" Column 1 "), str(" Column 2 "), str("\n")},
+				NewLine: "\n",
+				Cells:   []MarkdownElement{str(" Column 1 "), str(" Column 2 ")},
 			},
-			sep: TableRow{Cells: []MarkdownElement{
-				str(""),
-				str("----------"),
-				str("----------"),
-				str("\n"),
-			}},
+			sep: TableRow{
+				NewLine: "\n",
+				Cells: []MarkdownElement{
+					str("----------"),
+					str("----------"),
+				}},
 			rows: []TableRow{
 				{
-					Cells: []MarkdownElement{str(""), str(" A "), str(" B "), str("")},
+					NewLine: "",
+					Cells:   []MarkdownElement{str(" A "), str(" B ")},
 				}}}},
 	}
 
