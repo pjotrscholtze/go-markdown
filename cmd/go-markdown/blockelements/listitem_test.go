@@ -605,6 +605,10 @@ This is a paragraph after the list.
 						Content: input,
 					}}
 				})
+			gmd := entity.GlueToString(got)
+			emd := entity.GlueToString(test.expect)
+			_ = gmd
+			_ = emd
 			if !equalResults(got, test.expect) {
 				t.Errorf("Expected %v, got %v", test.expect, got)
 			}

@@ -19,13 +19,14 @@ func TestParser(t *testing.T) {
 			&entity.LineElement{Type: entity.ElementKindText, Content: "Hello"},
 		}},
 		{name: "Empty checkbox", input: "[ ] Hello", expect: []entity.MarkdownElement{
-			entity.NewCheckboxMarkdownElement("[ ] Hello",
+			entity.NewCheckboxMarkdownElement("[ ]",
 				func(input string) []entity.MarkdownElement {
 					return []entity.MarkdownElement{&entity.LineElement{
 						Type:    entity.ElementKindText,
 						Content: input,
 					}}
 				}),
+			&entity.LineElement{Type: entity.ElementKindText, Content: " Hello"},
 		}},
 		{name: "Heading", input: "# Hello", expect: []entity.MarkdownElement{
 			entity.NewHeaderMarkdownElement("# Hello", func(input string) []entity.MarkdownElement {
@@ -51,13 +52,14 @@ func TestParser(t *testing.T) {
 					})
 				return []entity.MarkdownElement{&md}
 			}),
-			entity.NewCheckboxMarkdownElement("[ ] Hello",
+			entity.NewCheckboxMarkdownElement("[ ]",
 				func(input string) []entity.MarkdownElement {
 					return []entity.MarkdownElement{&entity.LineElement{
 						Type:    entity.ElementKindText,
 						Content: input,
 					}}
 				}),
+			&entity.LineElement{Type: entity.ElementKindText, Content: " Hello"},
 		}},
 		{name: "Multiline with text content", input: `# Hello
 Testing
@@ -73,13 +75,14 @@ Testing
 				return []entity.MarkdownElement{&md}
 			}),
 			&entity.LineElement{Type: entity.ElementKindText, Content: "Testing\n"},
-			entity.NewCheckboxMarkdownElement("[ ] Hello",
+			entity.NewCheckboxMarkdownElement("[ ]",
 				func(input string) []entity.MarkdownElement {
 					return []entity.MarkdownElement{&entity.LineElement{
 						Type:    entity.ElementKindText,
 						Content: input,
 					}}
 				}),
+			&entity.LineElement{Type: entity.ElementKindText, Content: " Hello"},
 		}},
 	}
 
