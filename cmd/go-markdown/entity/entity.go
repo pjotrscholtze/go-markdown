@@ -5,6 +5,17 @@ type MarkdownElement interface {
 	Kind() string
 }
 
+type GroupElement struct {
+	Contents []MarkdownElement
+}
+
+func (ge *GroupElement) Kind() string {
+	return ElementKindGroup
+}
+func (ge *GroupElement) AsMarkdownString() string {
+	return GlueToString(ge.Contents)
+}
+
 type LineElement struct {
 	Type    string
 	Content string

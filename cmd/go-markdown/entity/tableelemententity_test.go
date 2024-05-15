@@ -5,6 +5,10 @@ import (
 )
 
 func TestTableEntityMarkdownElement(t *testing.T) {
+	str := func(in string) MarkdownElement {
+		s := RawTextMarkdownElement(in)
+		return &s
+	}
 	tests := []struct {
 		name   string
 		input  string
@@ -12,14 +16,36 @@ func TestTableEntityMarkdownElement(t *testing.T) {
 	}{
 		{name: "No content", input: `| | |
 |-|-|
-| | |`, expect: tableElementMarkdownElement{Content: `| | |
-|-|-|
-| | |`}},
+| | |`, expect: tableElementMarkdownElement{
+			header: TableRow{
+				Cells: []MarkdownElement{str(""), str(" "), str(" "), str("\n")},
+			},
+			sep: TableRow{Cells: []MarkdownElement{
+				str(""),
+				str("-"),
+				str("-"),
+				str("\n"),
+			}},
+			rows: []TableRow{
+				{
+					Cells: []MarkdownElement{str(""), str(" "), str(" "), str("")},
+				}}}},
 		{name: "Content", input: `| Column 1 | Column 2 |
 |----------|----------|
-| A | B |`, expect: tableElementMarkdownElement{Content: `| Column 1 | Column 2 |
-|----------|----------|
-| A | B |`}},
+| A | B |`, expect: tableElementMarkdownElement{
+			header: TableRow{
+				Cells: []MarkdownElement{str(""), str(" Column 1 "), str(" Column 2 "), str("\n")},
+			},
+			sep: TableRow{Cells: []MarkdownElement{
+				str(""),
+				str("----------"),
+				str("----------"),
+				str("\n"),
+			}},
+			rows: []TableRow{
+				{
+					Cells: []MarkdownElement{str(""), str(" A "), str(" B "), str("")},
+				}}}},
 	}
 
 	for _, test := range tests {

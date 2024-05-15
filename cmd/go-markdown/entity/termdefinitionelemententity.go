@@ -4,8 +4,13 @@ type termDefinitionElementMarkdownElement struct {
 	Content []MarkdownElement
 }
 type TermDefinitionElementMarkdownElement interface {
+	GetContent() []MarkdownElement
 	AsMarkdownString() string
 	Kind() string
+}
+
+func (bqme *termDefinitionElementMarkdownElement) GetContent() []MarkdownElement {
+	return bqme.Content
 }
 
 func (bqme *termDefinitionElementMarkdownElement) Kind() string {

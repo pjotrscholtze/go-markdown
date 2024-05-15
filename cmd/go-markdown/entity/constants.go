@@ -12,7 +12,8 @@ const (
 	ElementKindStrikethrough        = "strikethrough"
 	ElementKindInlineCode           = "inlinecode"
 
-	ElementKindText = "text"
+	ElementKindText  = "text"
+	ElementKindGroup = "group"
 
 	ElementKindHeader             = "header"
 	ElementKindBlockquote         = "blockquote"
