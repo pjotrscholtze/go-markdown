@@ -30,7 +30,7 @@ func ParseLineListItemElement(input string, parserFn func(input string) []entity
 			prelines = []string{line}
 			lineItemFound = true
 		} else if lineItemFound {
-			idx := strings.Index(prelines[0], " ")
+			idx := min(strings.Index(prelines[0], " "), len(line))
 			prefixMatch, _ := regexp.MatchString(`^\s+$`, line[:idx])
 			whiteSpaceLine, _ := regexp.MatchString(`^\s+$`, line)
 			if prefixMatch && !whiteSpaceLine {
