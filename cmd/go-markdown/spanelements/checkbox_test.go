@@ -17,13 +17,18 @@ func TestCheckbox(t *testing.T) {
 			&entity.LineElement{Type: entity.ElementKindText, Content: "~~Hello~~"},
 		}},
 		{name: "Empty checkbox", input: "[ ] Hello", expect: []entity.MarkdownElement{
-			&entity.LineElement{Type: entity.ElementKindCheckbox, Content: "[ ] Hello"},
+			&entity.LineElement{Type: entity.ElementKindCheckbox, Content: "[ ]"},
+			&entity.LineElement{Type: entity.ElementKindText, Content: " Hello"},
 		}},
 		{name: "Checked checkbox", input: "[x] Hello", expect: []entity.MarkdownElement{
-			&entity.LineElement{Type: entity.ElementKindCheckbox, Content: "[x] Hello"},
+			&entity.LineElement{Type: entity.ElementKindCheckbox, Content: "[x]"},
+			&entity.LineElement{Type: entity.ElementKindText, Content: " Hello"},
 		}},
 		{name: "Multi checked checkbox", input: "[x] Hello [x] world", expect: []entity.MarkdownElement{
-			&entity.LineElement{Type: entity.ElementKindCheckbox, Content: "[x] Hello [x] world"},
+			&entity.LineElement{Type: entity.ElementKindCheckbox, Content: "[x]"},
+			&entity.LineElement{Type: entity.ElementKindText, Content: " Hello "},
+			&entity.LineElement{Type: entity.ElementKindCheckbox, Content: "[x]"},
+			&entity.LineElement{Type: entity.ElementKindText, Content: " world"},
 		}},
 	}
 
