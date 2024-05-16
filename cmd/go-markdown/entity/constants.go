@@ -15,6 +15,7 @@ const (
 	ElementKindText  = "text"
 	ElementKindGroup = "group"
 
+	ElementKindFootnoteDefinition = "footnoteDefinition"
 	ElementKindHeader             = "header"
 	ElementKindBlockquote         = "blockquote"
 	ElementKindTable              = "table"
