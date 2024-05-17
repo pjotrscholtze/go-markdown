@@ -6,8 +6,16 @@ type emojiMarkdownElement struct {
 type EmojiMarkdownElement interface {
 	AsMarkdownString() string
 	Kind() string
+	GetContent() string
+	SetContent(content string)
 }
 
+func (ime *emojiMarkdownElement) GetContent() string {
+	return ime.Content
+}
+func (ime *emojiMarkdownElement) SetContent(content string) {
+	ime.Content = content
+}
 func (ime *emojiMarkdownElement) Kind() string {
 	return ElementKindEmoji
 }
