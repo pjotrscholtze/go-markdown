@@ -12,8 +12,9 @@ const (
 	ElementKindStrikethrough        = "strikethrough"
 	ElementKindInlineCode           = "inlinecode"
 
-	ElementKindText  = "text"
-	ElementKindGroup = "group"
+	ElementKindText      = "text"
+	ElementKindGroup     = "group"
+	ElementKindParagraph = "paragraph"
 
 	ElementKindFootnoteDefinition = "footnoteDefinition"
 	ElementKindHeader             = "header"
