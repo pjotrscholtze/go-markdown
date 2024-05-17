@@ -12,7 +12,7 @@ func ParseLineEmojiElement(input []entity.MarkdownElement, parserFn func(input s
 			res = append(res, entry)
 			continue
 		}
-		for _, entry := range util.FindPatternsAndNonPatterns(`:[A-Za-z0-9]+:`, entry.AsMarkdownString(), entity.ElementKindEmoji, entity.ElementKindText) {
+		for _, entry := range util.FindPatternsAndNonPatterns(`:[A-Za-z0-9\-_]+:`, entry.AsMarkdownString(), entity.ElementKindEmoji, entity.ElementKindText) {
 			if entry.Type == entity.ElementKindEmoji {
 				res = append(res, entity.NewEmojiMarkdownElement(entry.Content, parserFn))
 			} else {

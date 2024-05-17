@@ -28,10 +28,10 @@ func TestParseLineEmojiElementNormalNontext(t *testing.T) {
 	}
 }
 func TestParseLineEmojiElementNormal(t *testing.T) {
-	input := "Hello :smile:"
+	input := "Hello :smile-2:"
 	expectedOutput := []entity.MarkdownElement{
 		&entity.LineElement{Type: entity.ElementKindText, Content: "Hello "},
-		&entity.LineElement{Type: entity.ElementKindEmoji, Content: ":smile:"},
+		&entity.LineElement{Type: entity.ElementKindEmoji, Content: ":smile-2:"},
 	}
 	result := ParseLineEmojiElement([]entity.MarkdownElement{
 		&entity.LineElement{Type: entity.ElementKindText, Content: input}},
